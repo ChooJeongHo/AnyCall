@@ -3,10 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/mainColor"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:padding="10dp"
+        android:src="@drawable/ic_launcher_background"
         android:id="@+id/item_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -15,17 +18,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:text="이름부분"
         android:id="@+id/item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:textStyle="bold"
+        android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="@+id/item_image"
         app:layout_constraintStart_toEndOf="@+id/item_image"
         app:layout_constraintTop_toTopOf="@+id/item_image" />
 
     <ImageView
+        android:layout_marginRight="10dp"
         android:id="@+id/like_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

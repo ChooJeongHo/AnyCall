@@ -13,11 +13,8 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val dataList = mutableListOf<MyItem>()
-        dataList.add(MyItem(R.drawable.ic_launcher_foreground, "asdf", R.drawable.ic_launcher_background))
-        dataList.add(MyItem(R.drawable.ic_launcher_foreground, "qwer", R.drawable.ic_launcher_background))
 
-        val adapter = MyAdapter(dataList)
+        val adapter = MyAdapter(MyItem.dataList)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -35,3 +32,6 @@ class MainActivity : AppCompatActivity(){
         }.commit()
     }
 }
+/**
+ * 데이터 넣기, item.xml 구성하기, 롱클릭으로 학제, 플로팅버튼 추가
+ */
