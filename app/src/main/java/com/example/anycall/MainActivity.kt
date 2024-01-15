@@ -13,8 +13,23 @@ class MainActivity : AppCompatActivity(){
         setContentView(binding.root)
 
         val dataList = mutableListOf<MyItem>()
-        dataList.add(MyItem(R.drawable.ic_launcher_foreground, "asdf", R.drawable.ic_launcher_background))
-        dataList.add(MyItem(R.drawable.ic_launcher_foreground, "qwer", R.drawable.ic_launcher_background))
+        dataList.add(MyItem(R.drawable.ic_person1, "Sophia", R.drawable.ic_star_blank))
+        dataList.add(MyItem(R.drawable.ic_person2, "Emma", R.drawable.ic_star_blank))
+        dataList.add(MyItem(R.drawable.ic_person3, "Olivia", R.drawable.ic_star_blank))
+        dataList.add(MyItem(R.drawable.ic_person4, "Isabella", R.drawable.ic_star_blank))
+        dataList.add(MyItem(R.drawable.ic_person5, "Ava", R.drawable.ic_star_blank))
+        dataList.add(MyItem(R.drawable.ic_person6, "Mia", R.drawable.ic_star_blank))
+        dataList.add(MyItem(R.drawable.ic_person7, "Emily", R.drawable.ic_star_blank))
+        dataList.add(MyItem(R.drawable.ic_person8, "Abigail", R.drawable.ic_star_blank))
+        dataList.add(MyItem(R.drawable.ic_person9, "Madison", R.drawable.ic_star_blank))
+        dataList.add(MyItem(R.drawable.ic_person10, "Elizabeth", R.drawable.ic_star_blank))
+        dataList.add(MyItem(R.drawable.ic_person11, "Charlotte", R.drawable.ic_star_blank))
+        dataList.add(MyItem(R.drawable.ic_person12, "Avery", R.drawable.ic_star_blank))
+        dataList.add(MyItem(R.drawable.ic_person13, "Sofia", R.drawable.ic_star_blank))
+        dataList.add(MyItem(R.drawable.ic_person14, "Chloe", R.drawable.ic_star_blank))
+        dataList.add(MyItem(R.drawable.ic_person15, "Ella", R.drawable.ic_star_blank))
+        dataList.add(MyItem(R.drawable.ic_person16, "Harper", R.drawable.ic_star_blank))
+        dataList.add(MyItem(R.drawable.ic_person17, "Amelia", R.drawable.ic_star_blank))
 
         val adapter = MyAdapter(dataList)
         binding.recyclerView.adapter = adapter
@@ -33,3 +48,6 @@ class MainActivity : AppCompatActivity(){
         }.commit()
     }
 }
+/**
+ * 데이터 넣기, item.xml 구성하기, 롱클릭으로 학제, 플로팅버튼 추가
+ */
