@@ -31,5 +31,5 @@ class MainActivity : AppCompatActivity(){
     }
 }
 /**
- * 데이터 넣기, item.xml 구성하기, 롱클릭으로 학제, 플로팅버튼 추가
+ * 데이터 넣기, item.xml 구성하기, 롱클릭으로 삭제, 플로팅버튼 추가
  */
