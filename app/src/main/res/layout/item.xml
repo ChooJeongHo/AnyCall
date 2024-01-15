@@ -31,7 +31,6 @@
 
     <ImageView
         android:layout_marginRight="10dp"
-        android:src="@drawable/star"
         android:id="@+id/like_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
