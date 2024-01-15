@@ -13,8 +13,6 @@ class MainActivity : AppCompatActivity(){
         setContentView(binding.root)
 
         val dataList = mutableListOf<MyItem>()
-        dataList.add(MyItem(R.drawable.ic_launcher_foreground, "asdf", R.drawable.ic_launcher_background))
-        dataList.add(MyItem(R.drawable.ic_launcher_foreground, "qwer", R.drawable.ic_launcher_background))
 
         val adapter = MyAdapter(dataList)
         binding.recyclerView.adapter = adapter
