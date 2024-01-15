@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity(){
         dataList.add(MyItem(R.drawable.ic_person16, "Harper", R.drawable.ic_star_blank))
         dataList.add(MyItem(R.drawable.ic_person17, "Amelia", R.drawable.ic_star_blank))
 
+
         val adapter = MyAdapter(dataList)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
