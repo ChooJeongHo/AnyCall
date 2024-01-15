@@ -1,13 +1,14 @@
 package com.example.anycall
 
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import androidx.fragment.app.Fragment
+import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.anycall.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(){
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity(){
         }
 
     }
+
     private fun setFragment(frag: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.frame, frag)
