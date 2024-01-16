@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity(){
             setFragment(ContactsFragment())
         }
 
+        setFragment(ContactsFragment())
     }
 
     private fun setFragment(frag: Fragment) {
