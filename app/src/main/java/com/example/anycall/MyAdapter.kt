@@ -17,7 +17,7 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.itemView.setOnClickListener {  //클릭이벤트추가부분
         }
-        holder.iconImageView.setImageResource(mItems[position].icon)
+        holder.iconImageView.setImageURI(mItems[position].icon)
         holder.name.text = mItems[position].name
         holder.like.setImageResource(mItems[position].like)
 
@@ -48,4 +48,5 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
         val name = binding.itemName
         val like = binding.likeImage
     }
+
 }
