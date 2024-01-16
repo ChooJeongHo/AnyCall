@@ -17,20 +17,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        val adapter = MyAdapter(dataList)
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-
         binding.button1.setOnClickListener {
             setFragment(ContactsFragment())
         }
 
-        adapter.itemClick = object : MyAdapter.ItemClick {
-            override fun onClick(view: View, position: Int) {
-                val fragment = ContactDetailFragment.newInstance(dataList[position].icon, dataList[position].phoneNum, dataList[position].myMessage, dataList[position].email)
-                setFragment(fragment)
-            }
-        }
+        setFragment(ContactsFragment())
+
     }
 
 

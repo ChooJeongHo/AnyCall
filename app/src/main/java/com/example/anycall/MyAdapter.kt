@@ -24,7 +24,7 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
         holder.itemView.setOnClickListener {
             itemClick?.onClick(it, position)
         }
-        holder.iconImageView.setImageResource(mItems[position].icon)
+        holder.iconImageView.setImageURI(mItems[position].icon)
         holder.name.text = mItems[position].name
         holder.like.setImageResource(mItems[position].like)
     }
@@ -42,4 +42,5 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
         val name = binding.itemName
         val like = binding.likeImage
     }
+
 }
