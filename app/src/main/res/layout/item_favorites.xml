@@ -1,44 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/rounded_background"
-    android:paddingStart="12dp"
-    android:paddingEnd="12dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    android:layout_marginEnd="30dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_favorite_profile"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+    <ImageView
+        android:id="@+id/item_favorite_image"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:scaleType="fitXY"
         android:src="@drawable/ic_dummy"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_favorite_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:text="보노보노"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_favorite_profile"
-        app:layout_constraintStart_toEndOf="@+id/iv_favorite_profile"
-        app:layout_constraintTop_toTopOf="@+id/iv_favorite_profile" />
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/profile_grdient"
+        app:layout_constraintBottom_toBottomOf="@id/item_favorite_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/iv_favorite_like"
+        android:id="@+id/item_favorite_star"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:src="@drawable/ic_star_fill"
-        app:layout_constraintBottom_toBottomOf="@id/iv_favorite_profile"
-        app:layout_constraintTop_toTopOf="@id/iv_favorite_profile"
-        app:layout_constraintStart_toEndOf="@id/tv_favorite_name"
-        android:layout_marginStart="80dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/item_favorite_call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="80dp"
+        android:src="@drawable/ic_call"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/item_favorite_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="보노보노"
+        app:layout_constraintTop_toTopOf="@id/item_favorite_call"
+        app:layout_constraintBottom_toBottomOf="@id/item_favorite_call"
+        app:layout_constraintStart_toEndOf="@id/item_favorite_call"
+        android:layout_marginStart="4dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="30sp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
