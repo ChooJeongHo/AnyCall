@@ -28,15 +28,15 @@ class MyPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        initRecyclerView()
+//        initRecyclerView()
 
         return binding.root
     }
 
-    private fun initRecyclerView() {
-        val favoriteAdapter = FavoriteAdapter(MyItem.dataList.filter { it.favorite }.toMutableList())
-        binding.revFavorites.adapter = favoriteAdapter
-    }
+//    private fun initRecyclerView() {
+//        val favoriteAdapter = FavoriteAdapter(MyItem.dataList.filter { it.favorite }.toMutableList())
+//        binding.revFavorites.adapter = favoriteAdapter
+//    }
 
     companion object {
         @JvmStatic
