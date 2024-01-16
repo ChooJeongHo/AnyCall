@@ -22,7 +22,7 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 class ContactsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+    private var isImageSelected = false
     private var param1: String? = null
     private var param2: String? = null
     private val binding by lazy { FragmentContactsBinding.inflate(layoutInflater) }
@@ -78,16 +78,29 @@ class ContactsFragment : Fragment() {
                     val state = statusEdit.text.toString()
                     val email = emailEdit.text.toString()
 
-                    val newItem =
-                        MyItem(
-                            selectedImageUri,
+                    val newItem: MyItem
+                    if(isImageSelected){
+                        newItem = MyItem(
+                                selectedImageUri,
+                                name,
+                                R.drawable.ic_star_blank,
+                                email,
+                                state,
+                                phone
+                            )
+                        isImageSelected = !isImageSelected
+                    } else{
+                        newItem = MyItem(
+                            Uri.parse("android.resource://com.example.anycall/drawable/user"),
                             name,
                             R.drawable.ic_star_blank,
                             email,
                             state,
                             phone
                         )
-                    MyItem.dataList.add(newItem)
+                    }
+                    dataList.add(newItem)
+
 
                     adapter.notifyDataSetChanged()
                 }
@@ -123,6 +136,7 @@ class ContactsFragment : Fragment() {
                 data ?: return
                 selectedImageUri = data.data as Uri
                 Glide.with(this).load(selectedImageUri).into(userImg)
+                isImageSelected = !isImageSelected
             }
 
             else -> {
