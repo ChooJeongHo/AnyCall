@@ -11,7 +11,8 @@ data class MyItem(
     val like: Int,
     val email: String,
     val myMessage:String,
-    val phoneNum:String
+    val phoneNum:String,
+    val favorite: Boolean = true
 ) : Parcelable {
     companion object {
         val dataList = mutableListOf(
@@ -26,5 +27,7 @@ data class MyItem(
             MyItem(Uri.parse("android.resource://com.example.anycall/drawable/ic_person9"), "Madison", R.drawable.ic_star_blank,"dkgkrltlfxk201@gmail.com", "아 일하기 실타", "01082103920"),
             MyItem(Uri.parse("android.resource://com.example.anycall/drawable/ic_person10"), "Elizabeth", R.drawable.ic_star_blank,"djeltjwlfkfdldi@hanmail.net", "월요병 지옥이야", "01049482838")
         )
+
+
     }
 }
