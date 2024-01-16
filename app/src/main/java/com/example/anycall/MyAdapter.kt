@@ -1,21 +1,63 @@
 package com.example.anycall
 
 
-import android.content.ClipData.Item
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.anycall.databinding.ItemBinding
+import android.Manifest
 
-class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapter.Holder>() {
+class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapter.Holder>(),
+    ItemTouchHelperListener {
+    private var recyclerView: RecyclerView? = null
+    companion object {
+        const val MY_PERMISSIONS_REQUEST_CALL_PHONE = 123 // You can use any unique value
+    }
 
     interface ItemClick {
-        fun onClick (view: View, position: Int)
+        fun onClick(view: View, position: Int)
     }
 
     var itemClick: ItemClick? = null
+
+    /**
+     * swipe할때
+     */
+    private val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(this))
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        this.recyclerView = recyclerView
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
+
+    override fun onItemSwipe(position: Int) {
+        val context = recyclerView?.context
+        val phoneNumber = mItems[position].phoneNum
+        if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.CALL_PHONE)
+            == PackageManager.PERMISSION_GRANTED
+        ){
+            val callIntent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneNumber"))
+            context?.startActivity(callIntent)
+        } else{
+            // 퍼미션이 없는 경우에는 사용자에게 요청
+            ActivityCompat.requestPermissions(
+                context as Activity,
+                arrayOf(Manifest.permission.CALL_PHONE),
+                MY_PERMISSIONS_REQUEST_CALL_PHONE
+            )
+        }
+
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = ItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return Holder(binding)
