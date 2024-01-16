@@ -14,6 +14,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.anycall.MyItem.Companion.dataList
 import com.example.anycall.databinding.FragmentContactsBinding
 
 
@@ -79,7 +80,14 @@ class ContactsFragment : Fragment() {
                     val email = emailEdit.text.toString()
 
                     val newItem =
-                        MyItem(selectedImageUri, name, R.drawable.ic_star_blank, email, state, phone)
+                        MyItem(
+                            selectedImageUri,
+                            name,
+                            R.drawable.ic_star_blank,
+                            email,
+                            state,
+                            phone
+                        )
                     MyItem.dataList.add(newItem)
 
                     adapter.notifyDataSetChanged()
@@ -91,21 +99,34 @@ class ContactsFragment : Fragment() {
                 builder.show()
 
             }
+
+        }
+
+        adapter.itemClick = object : MyAdapter.ItemClick {
+            override fun onClick(view: View, position: Int) {
+                requireActivity().supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.frame, ContactDetailFragment.newInstance(dataList[position]))
+                    setReorderingAllowed(true)
+                    addToBackStack("")
+                }.commit()
+            }
+
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(resultCode != Activity.RESULT_OK) return
+        if (resultCode != Activity.RESULT_OK) return
 
-        when(requestCode){
+        when (requestCode) {
             DEFAULT_GALLERY_REQUEST_CODE -> {
-                data?:return
+                data ?: return
                 selectedImageUri = data.data as Uri
                 Glide.with(this).load(selectedImageUri).into(userImg)
             }
-            else ->{
+
+            else -> {
                 userImg.setImageResource(R.drawable.user)
             }
         }
