@@ -13,7 +13,7 @@ private const val USER_MESSAGE = "user_message"
 private const val USER_EMAIL = "user_email"
 
 class ContactDetailFragment : Fragment() {
-    private var param1: String? = null
+    private var param1: Int? = null
     private var param2: String? = null
     private var param3: String? = null
     private var param4: String? = null
@@ -22,7 +22,7 @@ class ContactDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(USER_IMAGE)
+            param1 = it.getInt(USER_IMAGE)
             param2 = it.getString(USER_PHONE)
             param3 = it.getString(USER_MESSAGE)
             param4 = it.getString(USER_EMAIL)
@@ -36,13 +36,22 @@ class ContactDetailFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.userImage.setImageResource(param1!!)
+        binding.userPhone.text = param2
+        binding.userMessage.text = param3
+        binding.userEmail.text = param4
+    }
+
     companion object {
 
         @JvmStatic
-        fun newInstance(param1: String, param2: String, param3: String, param4: String) =
+        fun newInstance(param1: Int, param2: String, param3: String, param4: String) =
             ContactDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putString(USER_IMAGE, param1)
+                    putInt(USER_IMAGE, param1)
                     putString(USER_PHONE, param2)
                     putString(USER_MESSAGE, param3)
                     putString(USER_EMAIL, param4)
