@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity(){
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
         binding.button1.setOnClickListener {
-            setFragment(ContactsFragment())
+            setFragment(MyPageFragment())
         }
 
     }
