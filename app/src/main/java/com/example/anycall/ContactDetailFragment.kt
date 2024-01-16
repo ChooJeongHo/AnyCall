@@ -35,6 +35,13 @@ class ContactDetailFragment : Fragment() {
         binding.userMessage.text = receiveData?.myMessage
         binding.userEmail.text = receiveData?.email
 
+        binding.btnMessage.setOnClickListener {
+            val message = receiveData?.phoneNum
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("smsto:" + message)
+            startActivity(intent)
+        }
+
         binding.btnCall.setOnClickListener {
             val dial = receiveData?.phoneNum
             val intent = Intent(Intent.ACTION_DIAL)
