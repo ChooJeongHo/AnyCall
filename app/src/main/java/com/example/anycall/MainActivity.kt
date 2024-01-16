@@ -13,11 +13,6 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-
-        val adapter = MyAdapter(MyItem.dataList)
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-
         binding.button1.setOnClickListener {
             setFragment(ContactsFragment())
         }
