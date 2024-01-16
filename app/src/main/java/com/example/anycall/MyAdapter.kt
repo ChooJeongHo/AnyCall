@@ -19,6 +19,10 @@ import android.Manifest
 class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapter.Holder>(),
     ItemTouchHelperListener {
     private var recyclerView: RecyclerView? = null
+    private val alterBackColors = arrayOf(
+        R.color.white,
+        R.color.mainColor
+    )
     companion object {
         const val MY_PERMISSIONS_REQUEST_CALL_PHONE = 123 // You can use any unique value
     }
@@ -64,6 +68,11 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
+        val backgroundColor = ContextCompat.getColor(
+            holder.itemView.context,
+            alterBackColors[position % alterBackColors.size]
+        )
+        holder.itemView.setBackgroundColor(backgroundColor)
         holder.itemView.setOnClickListener {
             itemClick?.onClick(it, position)
         }
