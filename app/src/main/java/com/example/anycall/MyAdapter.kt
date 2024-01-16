@@ -2,6 +2,7 @@ package com.example.anycall
 
 
 import android.content.ClipData.Item
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,19 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
         holder.iconImageView.setImageURI(mItems[position].icon)
         holder.name.text = mItems[position].name
         holder.like.setImageResource(mItems[position].like)
+
+        holder.itemView.setOnLongClickListener {
+            AlertDialog.Builder(it.context)
+                .setTitle("삭제 확인")
+                .setMessage("${mItems[position].name} 연락처를 삭제하시겠습니까?")
+                .setPositiveButton("예") { _, _ ->
+                    mItems.removeAt(position)
+                    notifyItemRemoved(position)
+                }
+                .setNegativeButton("아니오", null)
+                .show()
+            return@setOnLongClickListener true
+        }
     }
 
     override fun getItemId(position: Int): Long {
