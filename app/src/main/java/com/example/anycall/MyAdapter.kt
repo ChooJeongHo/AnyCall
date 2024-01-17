@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.anycall.databinding.ItemBinding
 import android.Manifest
+import androidx.viewbinding.ViewBinding
+import com.example.anycall.databinding.ItemGridBinding
 
 class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapter.Holder>(),
     ItemTouchHelperListener {
@@ -32,6 +34,16 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
     }
 
     var itemClick: ItemClick? = null
+
+    private var isGridView = false
+
+    fun setGridView(isGridView: Boolean) {
+        this.isGridView = isGridView
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (isGridView) 1 else 0
+    }
 
     /**
      * swipe할때
@@ -62,8 +74,18 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+    /*override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = ItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return Holder(binding)
+    }*/
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = if (viewType == 1) {
+            ItemGridBinding.inflate(layoutInflater, parent, false)
+        } else {
+            ItemBinding.inflate(layoutInflater, parent, false)
+        }
         return Holder(binding)
     }
 
@@ -102,10 +124,28 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
         return mItems.size
     }
 
-    inner class Holder(val binding: ItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    /*inner class Holder(val binding: ItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val iconImageView = binding.itemImage
         val name = binding.itemName
         val like = binding.likeImage
+    }*/
+
+    inner class Holder(private val binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
+        val iconImageView = when (binding) {
+            is ItemBinding -> binding.itemImage
+            is ItemGridBinding -> binding.itemImage
+            else -> throw IllegalArgumentException("Invalid view binding")
+        }
+        val name = when (binding) {
+            is ItemBinding -> binding.itemName
+            is ItemGridBinding -> binding.itemName
+            else -> throw IllegalArgumentException("Invalid view binding")
+        }
+        val like = when (binding) {
+            is ItemBinding -> binding.likeImage
+            is ItemGridBinding -> binding.likeImage
+            else -> throw IllegalArgumentException("Invalid view binding")
+        }
     }
 
 }
