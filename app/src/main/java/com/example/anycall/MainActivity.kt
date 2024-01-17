@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initViewPager()
+        loadUserData()
     }
 
     private fun initViewPager() {
@@ -28,8 +29,21 @@ class MainActivity : AppCompatActivity() {
         }.attach()
     }
 
-}
+    private fun loadUserData() {
+        val pref = getSharedPreferences("pref",0)
+        val message = pref.getString("message","") ?: ""
+        User.updateUserMessage(message)
+    }
 
-/**
- * 데이터 넣기, item.xml 구성하기, 롱클릭으로 삭제, 플로팅버튼 추가
- */
+    private fun saveUserMessage(message: String) {
+        val pref = getSharedPreferences("pref",0)
+        val edit = pref.edit()
+        edit.putString("message", message).apply()
+    }
+
+    override fun onStop() {
+        saveUserMessage(User.getUser().myMessage)
+        super.onStop()
+    }
+
+}

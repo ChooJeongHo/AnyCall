@@ -10,7 +10,7 @@ data class MyItem(
     val name: String,
     val like: Int,
     val email: String,
-    val myMessage:String,
+    var myMessage:String,
     val phoneNum:String,
     val favorite: Boolean = false
 ) : Parcelable {
