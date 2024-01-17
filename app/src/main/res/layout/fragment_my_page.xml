@@ -15,6 +15,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <me.relex.circleindicator.CircleIndicator3
+        android:id="@+id/mypage_viewpager_indicator"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        app:ci_drawable="@drawable/indicator_orange"
+        app:ci_drawable_unselected="@drawable/indicator_white"
+        app:layout_constraintBottom_toBottomOf="@id/mypage_viewpager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ImageView
         android:id="@+id/ic_arrow_back"
         android:layout_width="wrap_content"
@@ -75,11 +85,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:textStyle="bold"
         android:background="@drawable/bg_mypage_info_line"
         android:text="010-2014-6432"
         android:textColor="@color/black"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/mypage_profile_image"
         app:layout_constraintTop_toBottomOf="@id/mypage_phone_text" />

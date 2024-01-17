@@ -56,6 +56,7 @@ class MyPageFragment : Fragment() {
             adapter = favoriteAdapter
             isUserInputEnabled = false
         }
+        binding.mypageViewpagerIndicator.setViewPager(binding.mypageViewpager)
     }
 
     private fun initViewpagerButton() {
