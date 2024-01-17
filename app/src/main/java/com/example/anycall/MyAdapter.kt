@@ -25,6 +25,7 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
         R.color.white,
         R.color.mainColor
     )
+
     companion object {
         const val MY_PERMISSIONS_REQUEST_CALL_PHONE = 123 // You can use any unique value
     }
@@ -62,19 +63,8 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
             mItems[position].isSwiped = true // 스와이프 상태 변경
             notifyItemChanged(position) // 아이템 변경을 알림
         }
-        if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.CALL_PHONE)
-            == PackageManager.PERMISSION_GRANTED
-        ){
-            val callIntent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneNumber"))
-            context?.startActivity(callIntent)
-        } else{
-            // 퍼미션이 없는 경우에는 사용자에게 요청
-            ActivityCompat.requestPermissions(
-                context as Activity,
-                arrayOf(Manifest.permission.CALL_PHONE),
-                MY_PERMISSIONS_REQUEST_CALL_PHONE
-            )
-        }
+        val callIntent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneNumber"))
+        context?.startActivity(callIntent)
 
     }
 
