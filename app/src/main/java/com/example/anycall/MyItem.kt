@@ -12,8 +12,8 @@ data class MyItem(
     val email: String,
     val myMessage:String,
     val phoneNum:String,
-    val favorite: Boolean = true,
-    var isSwiped: Boolean = false
+    var isSwiped: Boolean = false,
+    val favorite: Boolean = false
 ) : Parcelable {
     companion object {
         val dataList = mutableListOf(
@@ -26,9 +26,12 @@ data class MyItem(
             MyItem(Uri.parse("android.resource://com.example.anycall/drawable/ic_person7"), "Emily", R.drawable.ic_star_blank,"tibsjd322@naver.com", "컴퓨터 추천해주세요", "01059374323"),
             MyItem(Uri.parse("android.resource://com.example.anycall/drawable/ic_person8"), "Abigail", R.drawable.ic_star_blank,"bonobono290@naver.com", "보노보노에효", "01024919248"),
             MyItem(Uri.parse("android.resource://com.example.anycall/drawable/ic_person9"), "Madison", R.drawable.ic_star_blank,"dkgkrltlfxk201@gmail.com", "아 일하기 실타", "01082103920"),
-            MyItem(Uri.parse("android.resource://com.example.anycall/drawable/ic_person10"), "Elizabeth", R.drawable.ic_star_blank,"djeltjwlfkfdldi@hanmail.net", "월요병 지옥이야", "01049482838")
+            MyItem(Uri.parse("android.resource://com.example.anycall/drawable/ic_person10"), "Elizabeth", R.drawable.ic_star_blank,"djeltjwlfkfdldi@hanmail.net", "월요병 지옥이야", "01049482838"),
+            MyItem(Uri.parse("android.resource://com.example.anycall/drawable/favorite_img"), "고윤정", R.drawable.ic_star_blank,"GoGo123@hanmail.net", "월요병 지옥이야", "01033950023",true),
+            MyItem(Uri.parse("android.resource://com.example.anycall/drawable/favorite_img2"), "한지현", R.drawable.ic_star_blank,"han4432@naver.com", "월요병 지옥이야", "01084750394",true),
+            MyItem(Uri.parse("android.resource://com.example.anycall/drawable/favorite_img3"), "송중기", R.drawable.ic_star_blank,"song113@hanmail.net", "월요병 지옥이야", "01059395027",true),
+            MyItem(Uri.parse("android.resource://com.example.anycall/drawable/favorite_img4"), "한소희", R.drawable.ic_star_blank,"han8831@naver.com", "월요병 지옥이야", "01033505836",true)
         )
-
 
     }
 }

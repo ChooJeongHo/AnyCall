@@ -8,4 +8,16 @@
     </style>
 
     <style name="Theme.AnyCall" parent="Base.Theme.AnyCall" />
+
+    <!-- CustomDialog 배경 자르기 -->
+    <style name="CustomAlertDialog">
+        <!-- 꽉 채운 화면에 배경 없이 (custom view 영역만 보일 것이다.) -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+
+        <!-- Dialog 가 센터에 나오도록 하자. -->
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
 </resources>
