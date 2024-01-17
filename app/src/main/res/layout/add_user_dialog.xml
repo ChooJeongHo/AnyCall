@@ -42,4 +42,39 @@
         android:layout_marginLeft="20dp"
         android:hint="Email"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_notify_off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="OFF" />
+
+        <Button
+            android:id="@+id/btn_notify_five"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="5분 뒤 알림" />
+
+        <Button
+            android:id="@+id/btn_notify_ten"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="10분 뒤 알림" />
+
+    </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_notify_fifteen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="15분 뒤 알림" />
+
 </LinearLayout>
