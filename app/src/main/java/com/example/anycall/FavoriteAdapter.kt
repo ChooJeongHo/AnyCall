@@ -1,8 +1,10 @@
 package com.example.anycall
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.anycall.databinding.ItemFavoritesBinding
 
 class FavoriteAdapter(private val favoriteList: MutableList<MyItem>): RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
@@ -17,14 +19,17 @@ class FavoriteAdapter(private val favoriteList: MutableList<MyItem>): RecyclerVi
     }
 
     override fun getItemCount(): Int {
+        Log.d("FavoriteAdapterSize:",favoriteList.size.toString())
         return favoriteList.size
     }
 
     inner class FavoriteViewHolder(private val binding: ItemFavoritesBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MyItem) {
             with(binding) {
-                ivFavoriteProfile.setImageURI(item.icon)
-                tvFavoriteName.text = item.name
+                Glide.with(root)
+                    .load(item.icon)
+                    .into(itemFavoriteImage)
+
             }
         }
     }

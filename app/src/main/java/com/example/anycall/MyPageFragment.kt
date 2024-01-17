@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.viewpager2.widget.ViewPager2
 import com.example.anycall.databinding.FragmentMyPageBinding
 
 private const val ARG_PARAM1 = "param1"
@@ -28,15 +29,32 @@ class MyPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        initRecyclerView()
+        initViewpager()
 
         return binding.root
     }
 
-//    private fun initRecyclerView() {
-//        val favoriteAdapter = FavoriteAdapter(MyItem.dataList.filter { it.favorite }.toMutableList())
-//        binding.revFavorites.adapter = favoriteAdapter
-//    }
+    private fun initViewpager() {
+        val favoriteAdapter = FavoriteAdapter(MyItem.dataList.filter { it.favorite }.toMutableList())
+        binding.mypageViewpager.apply {
+            adapter = favoriteAdapter
+            isUserInputEnabled = false
+        }
+        binding.icArrowBack.setOnClickListener {
+            val current = binding.mypageViewpager.currentItem
+
+            binding.mypageViewpager.setCurrentItem(current - 1, true)
+        }
+        binding.icArrowForward.setOnClickListener {
+            val current = binding.mypageViewpager.currentItem
+
+            binding.mypageViewpager.setCurrentItem(current + 1, true)
+
+            if (current == favoriteAdapter.itemCount - 1) {
+                binding.mypageViewpager.setCurrentItem(0, true)
+            }
+        }
+    }
 
     companion object {
         @JvmStatic
