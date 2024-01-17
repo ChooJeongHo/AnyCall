@@ -50,7 +50,7 @@ class MyAlarmReceiver : BroadcastReceiver() {
         builder.run {
             setSmallIcon(R.mipmap.ic_launcher)
             setWhen(System.currentTimeMillis())
-            setContentTitle("새로운 알림입니다.")
+            setContentTitle("설정하신 알림이 왔습니다.")
             setContentText("알림이 잘 보이시나요.")
             setStyle(
                 NotificationCompat.BigTextStyle()

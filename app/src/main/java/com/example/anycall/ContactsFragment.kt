@@ -120,25 +120,20 @@ class ContactsFragment : Fragment() {
                     startActivityForResult(intent, DEFAULT_GALLERY_REQUEST_CODE)
                 }
                 btnOff.setOnClickListener {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        if (!NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()) {
-                            // 알림 권한이 없다면, 사용자에게 권한 요청
-                            val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-                                putExtra(Settings.EXTRA_APP_PACKAGE, requireActivity().packageName)
-                            }
-                            requireActivity().startActivity(intent)
-                        }
-                    }
-                    sendNotification()
+                    checkNotificationPermission()
+                    sendNotification(0)
                 }
                 btnFive.setOnClickListener {
-
+                    checkNotificationPermission()
+                    sendNotification(5000)
                 }
                 btnTen.setOnClickListener {
-
+                    checkNotificationPermission()
+                    sendNotification(10000)
                 }
                 btnFifteen.setOnClickListener {
-
+                    checkNotificationPermission()
+                    sendNotification(15000)
                 }
                 val listener = DialogInterface.OnClickListener { p0, p1 ->
                     val name = nameEdit.text.toString()
@@ -193,14 +188,24 @@ class ContactsFragment : Fragment() {
         }
     }
 
-    private fun sendNotification() {
+    private fun sendNotification(timeInMillis: Long) {
         val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val notificationIntent = Intent(requireContext(), MyAlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
-        // 알림을 보낼 시간을 설정합니다. 여기서는 5초 후로 설정했습니다.
-        val futureInMillis = SystemClock.elapsedRealtime() + 5000
+        val futureInMillis = SystemClock.elapsedRealtime() + timeInMillis
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
+    }
+
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (!NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()) {
+                val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                    putExtra(Settings.EXTRA_APP_PACKAGE, requireActivity().packageName)
+                }
+                requireActivity().startActivity(intent)
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
