@@ -12,6 +12,7 @@ data class MyItem(
     val email: String,
     val myMessage:String,
     val phoneNum:String,
+    var isSwiped: Boolean = false,
     val favorite: Boolean = false
 ) : Parcelable {
     companion object {
