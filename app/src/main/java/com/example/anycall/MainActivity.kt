@@ -16,7 +16,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val tabTextList = listOf("CONTACT","MY PAGE")
+    private val tabTextList = listOf("CONTACT", "MY PAGE")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,14 +24,16 @@ class MainActivity : AppCompatActivity() {
 
         initCallPermission()
         initViewPager()
+        loadUserData()
     }
 
     private fun initViewPager() {
         binding.viewpager2.adapter = ViewPagerAdapter(this)
-        TabLayoutMediator(binding.tabLayout, binding.viewpager2) {tab, pos ->
+        TabLayoutMediator(binding.tabLayout, binding.viewpager2) { tab, pos ->
             tab.text = tabTextList[pos]
         }.attach()
     }
+
     private fun initCallPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
             == PackageManager.PERMISSION_GRANTED
@@ -69,6 +71,7 @@ class MainActivity : AppCompatActivity() {
                     initViewPager()
                 }
             }
+
             101 -> {
                 // READ_CONTACTS 권한에 대한 응답 확인
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -84,11 +87,13 @@ class MainActivity : AppCompatActivity() {
                     initViewPager()
                 }
             }
+
             else -> {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults)
             }
         }
     }
+
     private fun initReadContactsPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
             == PackageManager.PERMISSION_GRANTED
@@ -103,5 +108,21 @@ class MainActivity : AppCompatActivity() {
                 101  // 다른 값으로 설정
             )
         }
+    }
+
+    private fun loadUserData() {
+        val pref = getSharedPreferences("pref", 0)
+        val message = pref.getString("message", "") ?: ""
+        User.updateUserMessage(message)
+    }
+
+    private fun saveUserMessage(message: String) {
+        val pref = getSharedPreferences("pref", 0)
+        val edit = pref.edit()
+        edit.putString("message", message).apply()
+    }
+    override fun onStop() {
+        saveUserMessage(User.getUser().myMessage)
+        super.onStop()
     }
 }
