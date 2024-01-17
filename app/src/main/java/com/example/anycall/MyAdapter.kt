@@ -1,20 +1,16 @@
 package com.example.anycall
 
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.anycall.databinding.ItemBinding
-import android.Manifest
 import androidx.viewbinding.ViewBinding
 import com.example.anycall.databinding.ItemGridBinding
 
