@@ -12,7 +12,8 @@ data class MyItem(
     val email: String,
     var myMessage:String,
     val phoneNum:String,
-    val favorite: Boolean = false
+    val favorite: Boolean = false,
+    var isSwiped: Boolean = false
 ) : Parcelable {
     companion object {
         val dataList = mutableListOf(
