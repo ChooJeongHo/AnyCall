@@ -1,44 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/rounded_background"
-    android:paddingStart="12dp"
-    android:paddingEnd="12dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    android:layout_marginEnd="30dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_favorite_profile"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+    <ImageView
+        android:id="@+id/item_favorite_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
         android:src="@drawable/ic_dummy"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_favorite_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:text="보노보노"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_favorite_profile"
-        app:layout_constraintStart_toEndOf="@+id/iv_favorite_profile"
-        app:layout_constraintTop_toTopOf="@+id/iv_favorite_profile" />
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/profile_grdient_black" />
 
     <ImageView
-        android:id="@+id/iv_favorite_like"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/profile_grdient_white"
+        app:layout_constraintBottom_toBottomOf="@id/item_favorite_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/item_favorite_star"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="36dp"
         android:src="@drawable/ic_star_fill"
-        app:layout_constraintBottom_toBottomOf="@id/iv_favorite_profile"
-        app:layout_constraintTop_toTopOf="@id/iv_favorite_profile"
-        app:layout_constraintStart_toEndOf="@id/tv_favorite_name"
-        android:layout_marginStart="80dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/item_favorite_call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginBottom="40dp"
+        android:src="@drawable/ic_call"
+        app:layout_constraintBottom_toBottomOf="@id/item_favorite_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/item_favorite_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="보노보노"
+        android:textColor="@color/white"
+        android:fontFamily="@font/pyeongchangpeacebold"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/item_favorite_call"
+        app:layout_constraintStart_toEndOf="@id/item_favorite_call"
+        app:layout_constraintTop_toTopOf="@id/item_favorite_call" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
