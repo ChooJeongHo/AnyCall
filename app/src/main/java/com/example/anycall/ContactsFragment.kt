@@ -1,10 +1,20 @@
 package com.example.anycall
 
 import android.app.Activity
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.media.AudioAttributes
+import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
+import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -12,11 +22,13 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -40,6 +52,7 @@ class ContactsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+//        (activity as AppCompatActivity).supportActionBar?.title = "Contacts"
         setHasOptionsMenu(true)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
@@ -100,18 +113,43 @@ class ContactsFragment : Fragment() {
                 val phoneEdit = v1.findViewById<EditText>(R.id.addUserPhone)
                 val statusEdit = v1.findViewById<EditText>(R.id.addUserStatus)
                 val emailEdit = v1.findViewById<EditText>(R.id.addUserEmail)
+                val btnOff = v1.findViewById<Button>(R.id.btn_notify_off)
+                val btnFive = v1.findViewById<Button>(R.id.btn_notify_five)
+                val btnTen = v1.findViewById<Button>(R.id.btn_notify_ten)
+                val btnFifteen = v1.findViewById<Button>(R.id.btn_notify_fifteen)
+
                 userImg.setOnClickListener {
                     val intent = Intent()
                     intent.type = "image/*"
                     intent.action = Intent.ACTION_GET_CONTENT
                     startActivityForResult(intent, DEFAULT_GALLERY_REQUEST_CODE)
                 }
+                btnOff.setOnClickListener {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        if (!NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()) {
+                            // 알림 권한이 없다면, 사용자에게 권한 요청
+                            val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                                putExtra(Settings.EXTRA_APP_PACKAGE, requireActivity().packageName)
+                            }
+                            requireActivity().startActivity(intent)
+                        }
+                    }
+                    sendNotification()
+                }
+                btnFive.setOnClickListener {
+
+                }
+                btnTen.setOnClickListener {
+
+                }
+                btnFifteen.setOnClickListener {
+
+                }
                 val listener = DialogInterface.OnClickListener { p0, p1 ->
                     val name = nameEdit.text.toString()
                     val phone = phoneEdit.text.toString()
                     val state = statusEdit.text.toString()
                     val email = emailEdit.text.toString()
-
                     val newItem: MyItem
                     if(isImageSelected){
                         newItem = MyItem(
@@ -158,6 +196,16 @@ class ContactsFragment : Fragment() {
             }
 
         }
+    }
+
+    private fun sendNotification() {
+        val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val notificationIntent = Intent(requireContext(), MyAlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+
+        // 알림을 보낼 시간을 설정합니다. 여기서는 5초 후로 설정했습니다.
+        val futureInMillis = SystemClock.elapsedRealtime() + 5000
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
