@@ -10,10 +10,10 @@ data class MyItem(
     val name: String,
     val like: Int,
     val email: String,
-    val myMessage:String,
+    var myMessage:String,
     val phoneNum:String,
-    var isSwiped: Boolean = false,
-    val favorite: Boolean = false
+    val favorite: Boolean = false,
+    var isSwiped: Boolean = false
 ) : Parcelable {
     companion object {
         val dataList = mutableListOf(

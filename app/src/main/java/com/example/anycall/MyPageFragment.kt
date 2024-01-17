@@ -35,6 +35,7 @@ class MyPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        initInfo()
         initViewpager()
         initViewpagerButton()
         initEditButton()
@@ -42,9 +43,19 @@ class MyPageFragment : Fragment() {
         return binding.root
     }
 
+    private fun initInfo() {
+        with(binding) {
+            mypageProfileName.text = User.getUser().name
+            mypagePhone.text = User.getUser().phoneNum
+            mypageMessage.text = User.getUser().myMessage
+            mypageEmail.text = User.getUser().email
+        }
+    }
+
     private fun initViewpager() {
         favoriteAdapter.apply {
             submitList(MyItem.dataList.filter { it.favorite }.toMutableList())
+
             listener = object : FavoriteAdapter.OnItemClickListener {
                 override fun onItemClick(data: MyItem, pos: Int) {
                     val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:${data.phoneNum}"))
@@ -52,16 +63,19 @@ class MyPageFragment : Fragment() {
                 }
             }
         }
-        binding.mypageViewpager.apply {
-            adapter = favoriteAdapter
-            isUserInputEnabled = false
+
+        with(binding) {
+            mypageViewpager.apply {
+                adapter = favoriteAdapter
+                isUserInputEnabled = false
+            }
+            mypageViewpagerIndicator.setViewPager(binding.mypageViewpager)
         }
-        binding.mypageViewpagerIndicator.setViewPager(binding.mypageViewpager)
+
     }
 
     private fun initViewpagerButton() {
         with(binding) {
-
             icArrowBack.setOnClickListener {
                 val current = mypageViewpager.currentItem
 
@@ -79,7 +93,6 @@ class MyPageFragment : Fragment() {
                     binding.mypageViewpager.setCurrentItem(0, true)
                 }
             }
-
         }
     }
 
@@ -99,6 +112,8 @@ class MyPageFragment : Fragment() {
 
         dialogView.mypageDialogButton.setOnClickListener {
             val message = dialogView.mypageDialogEdit.text.toString()
+            binding.mypageMessage.text = message
+            User.updateUserMessage(message)
             alertDialog.dismiss()
         }
 
