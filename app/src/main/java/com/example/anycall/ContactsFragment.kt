@@ -1,10 +1,14 @@
 package com.example.anycall
 
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -14,8 +18,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +44,7 @@ class ContactsFragment : Fragment() {
     private lateinit var selectedImageUri: Uri
     private lateinit var userImg: ImageView
     private lateinit var adapter: MyAdapter
+    lateinit var requestLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +54,104 @@ class ContactsFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        val status = ContextCompat.checkSelfPermission(requireContext(), "android.permission.READ_CONTACTS")
+        if (status == PackageManager.PERMISSION_GRANTED) {
+            Log.d("test", "permission granted")
+        } else {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf<String>("android.permission.READ_CONTACTS"), 100)
+            Log.d("test", "permission denied")
+        }
+        requestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            if(it.resultCode == RESULT_OK){
+                //주소록정보 가져오기
+            }
+        }
+
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            Log.d("test", "permission granted")
+            val contacts = getContacts()
+            dataList.addAll(contacts)
+            adapter.notifyDataSetChanged()
+        } else{
+            Log.d("test", "permission denied")
+        }
+    }
+    private fun getContacts(): ArrayList<MyItem> {
+        val contacts = ArrayList<MyItem>()
+
+        val projection = arrayOf(
+            ContactsContract.Contacts._ID,
+            ContactsContract.Contacts.DISPLAY_NAME,
+            ContactsContract.Contacts.PHOTO_URI,
+            ContactsContract.Contacts.HAS_PHONE_NUMBER
+        )
+
+        val cursor = requireContext().contentResolver.query(
+            ContactsContract.Contacts.CONTENT_URI,
+            projection,
+            null,
+            null,
+            ContactsContract.Contacts.DISPLAY_NAME
+        )
+
+        cursor?.use {
+            val idIndex = it.getColumnIndex(ContactsContract.Contacts._ID)
+            val nameIndex = it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
+            val photoUriIndex = it.getColumnIndex(ContactsContract.Contacts.PHOTO_URI)
+            val hasPhoneNumberIndex = it.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)
+
+            while (it.moveToNext()) {
+                val contactId = it.getString(idIndex)
+                val name = it.getString(nameIndex)
+
+                val photoUriString = if (photoUriIndex != -1) it.getString(photoUriIndex) else null
+                val photoUri = if (!photoUriString.isNullOrBlank()) Uri.parse(photoUriString) else null
+
+                val hasPhoneNumber = it.getInt(hasPhoneNumberIndex) > 0
+
+                val phoneNumbers = if (hasPhoneNumber) getContactNumbers(contactId) else emptyList()
+
+                val contact = MyItem(photoUri, name, R.drawable.ic_star_blank, "", "", phoneNumbers.firstOrNull() ?: "")
+                contacts.add(contact)
+            }
+        }
+
+        return contacts
+    }
+
+    private fun getContactNumbers(contactId: String): List<String> {
+        val numbers = ArrayList<String>()
+
+        val cursor = requireContext().contentResolver.query(
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+            arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER),
+            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+            arrayOf(contactId),
+            null
+        )
+
+        cursor?.use {
+            val numberIndex = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+
+            while (it.moveToNext()) {
+                // Check if NUMBER exists in the cursor
+                val phoneNumber = if (numberIndex != -1) it.getString(numberIndex) else null
+                phoneNumber?.let { number -> numbers.add(number) }
+            }
+        }
+
+        return numbers
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_contacts, menu)
