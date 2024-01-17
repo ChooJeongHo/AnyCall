@@ -1,14 +1,11 @@
 package com.example.anycall
 
 import android.app.Activity
-import android.app.Activity.RESULT_OK
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.provider.ContactsContract
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -18,18 +15,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.anycall.MyItem.Companion.dataList
 import com.example.anycall.databinding.FragmentContactsBinding
+import android.Manifest
+import android.content.ContentUris
+import android.content.Context
+import android.content.ContextWrapper
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.provider.ContactsContract
+import android.util.Log
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 
 
 private const val ARG_PARAM1 = "param1"
@@ -44,7 +51,7 @@ class ContactsFragment : Fragment() {
     private lateinit var selectedImageUri: Uri
     private lateinit var userImg: ImageView
     private lateinit var adapter: MyAdapter
-    lateinit var requestLauncher: ActivityResultLauncher<Intent>
+    private var isDataLoaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,19 +62,25 @@ class ContactsFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
-        val status = ContextCompat.checkSelfPermission(requireContext(), "android.permission.READ_CONTACTS")
-        if (status == PackageManager.PERMISSION_GRANTED) {
-            Log.d("test", "permission granted")
-        } else {
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf<String>("android.permission.READ_CONTACTS"), 100)
-            Log.d("test", "permission denied")
-        }
-        requestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            if(it.resultCode == RESULT_OK){
-                //주소록정보 가져오기
-            }
-        }
+    }
 
+    /**
+     * 사용권한 여부 물어보기
+     */
+    private fun initPermission() {
+        val status = ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.READ_CONTACTS
+        )
+        if (status != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.READ_CONTACTS),
+                100
+            )
+        } else {
+            updateContactList()
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -76,80 +89,136 @@ class ContactsFragment : Fragment() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            Log.d("test", "permission granted")
-            val contacts = getContacts()
-            dataList.addAll(contacts)
-            adapter.notifyDataSetChanged()
-        } else{
-            Log.d("test", "permission denied")
+        if (requestCode == 100 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // READ_CONTACTS 권한이 부여되면 연락처 업데이트를 진행
+            updateContactList()
         }
     }
-    private fun getContacts(): ArrayList<MyItem> {
-        val contacts = ArrayList<MyItem>()
 
-        val projection = arrayOf(
-            ContactsContract.Contacts._ID,
-            ContactsContract.Contacts.DISPLAY_NAME,
-            ContactsContract.Contacts.PHOTO_URI,
-            ContactsContract.Contacts.HAS_PHONE_NUMBER
-        )
+    /**
+     * 전화번호부에서 데이터 가져오기
+     */
+    private fun updateContactList() {
+        if (isDataLoaded) return
 
-        val cursor = requireContext().contentResolver.query(
-            ContactsContract.Contacts.CONTENT_URI,
-            projection,
-            null,
-            null,
-            ContactsContract.Contacts.DISPLAY_NAME
-        )
-
-        cursor?.use {
-            val idIndex = it.getColumnIndex(ContactsContract.Contacts._ID)
-            val nameIndex = it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
-            val photoUriIndex = it.getColumnIndex(ContactsContract.Contacts.PHOTO_URI)
-            val hasPhoneNumberIndex = it.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)
-
-            while (it.moveToNext()) {
-                val contactId = it.getString(idIndex)
-                val name = it.getString(nameIndex)
-
-                val photoUriString = if (photoUriIndex != -1) it.getString(photoUriIndex) else null
-                val photoUri = if (!photoUriString.isNullOrBlank()) Uri.parse(photoUriString) else null
-
-                val hasPhoneNumber = it.getInt(hasPhoneNumberIndex) > 0
-
-                val phoneNumbers = if (hasPhoneNumber) getContactNumbers(contactId) else emptyList()
-
-                val contact = MyItem(photoUri, name, R.drawable.ic_star_blank, "", "", phoneNumbers.firstOrNull() ?: "")
-                contacts.add(contact)
-            }
-        }
-
-        return contacts
-    }
-
-    private fun getContactNumbers(contactId: String): List<String> {
-        val numbers = ArrayList<String>()
-
-        val cursor = requireContext().contentResolver.query(
+        isDataLoaded = true
+        val cursor = requireActivity().contentResolver.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-            arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER),
-            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-            arrayOf(contactId),
+            null,
+            null,
+            null,
+            null
+        )
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                val nameColumnIndex =
+                    cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                val phoneNumberColumnIndex =
+                    cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+//                val contactIdColumnIndex =
+//                    cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone._ID)
+                val contactIdColumnIndex =
+                    cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.RAW_CONTACT_ID)
+                if (nameColumnIndex >= 0 && phoneNumberColumnIndex >= 0 && contactIdColumnIndex >= 0) {
+                    val name = cursor.getString(nameColumnIndex)
+                    val phoneNumber = cursor.getString(phoneNumberColumnIndex)
+//                    val contactId = cursor.getLong(contactIdColumnIndex)
+                    val rawContactId = cursor.getLong(contactIdColumnIndex)
+
+                    // 여기서 필요한 데이터를 가져와서 MyItem 객체를 생성하여 dataList에 추가
+                    val newItem = MyItem(
+                        icon = getContactPhotoUri(rawContactId) ?:null,
+                        name = name ?: "",
+                        like = R.drawable.ic_star_blank,
+                        email = getEmail(rawContactId) ?: "",
+                        myMessage = "",
+                        phoneNum = phoneNumber ?: ""
+                    )
+
+                    dataList.add(newItem)
+                }
+            }
+            cursor.close()
+        }
+
+        if (!::adapter.isInitialized) {
+            adapter = MyAdapter(dataList)
+            binding.recyclerView.adapter = adapter
+        }
+
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun getEmail(contactId: Long): String? {
+        val emailCursor = requireActivity().contentResolver.query(
+            ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+            null,
+            ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
+            arrayOf(contactId.toString()),
             null
         )
 
-        cursor?.use {
-            val numberIndex = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
-
-            while (it.moveToNext()) {
-                // Check if NUMBER exists in the cursor
-                val phoneNumber = if (numberIndex != -1) it.getString(numberIndex) else null
-                phoneNumber?.let { number -> numbers.add(number) }
+        var email: String? = null
+        emailCursor?.use {
+            if (it.moveToFirst()) {
+                val emailColumnIndex = it.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS)
+                email = it.getString(emailColumnIndex)
             }
         }
 
-        return numbers
+        emailCursor?.close()
+        return email
+    }
+
+    private fun getContactPhotoUri(rawContactId: Long): Uri? {
+        Log.d("ContactsFragment", "getContactPhotoUri called")
+
+        val photoUri = ContentUris.withAppendedId(
+            ContactsContract.Contacts.CONTENT_URI,
+            rawContactId
+        )
+        Log.d("ContactsFragment", "Photo URI: $photoUri")
+
+        val inputStream: InputStream? =
+            ContactsContract.Contacts.openContactPhotoInputStream(
+                requireActivity().contentResolver,
+                photoUri
+            )
+
+        val result: Uri? = if (inputStream != null) {
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            inputStream.close()
+            Log.d("ContactsFragment", "Bitmap decoded successfully")
+            saveImageToInternalStorage(bitmap, rawContactId.toString()) // 저장된 파일의 Uri를 반환
+        } else {
+            // 연락처에 사진이 없을 경우
+            Log.d("ContactsFragment", "No contact photo found, using default URI")
+            Uri.parse("android.resource://com.example.anycall/drawable/user")
+        }
+
+        Log.d("ContactsFragment", "가져온 사진: $result")
+        return result
+    }
+
+    private fun saveImageToInternalStorage(bitmap: Bitmap, fileName: String): Uri? {
+        Log.d("ContactsFragment", "saveImageToInternalStorage called")
+        // 내부 저장소에 이미지를 저장하고 해당 파일의 Uri를 반환합니다.
+        val wrapper = ContextWrapper(requireContext())
+        var file = wrapper.getDir("images", Context.MODE_PRIVATE)
+        file = File(file, "$fileName.jpg")
+
+        try {
+            val stream: OutputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            stream.flush()
+            stream.close()
+            return Uri.parse(file.absolutePath)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Log.e("ContactsFragment", "Failed to save image to internal storage: ${e.message}")
+        }
+        // 이미지 저장에 실패한 경우 null을 반환
+        return null
     }
 
 
@@ -182,6 +251,7 @@ class ContactsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        initPermission()
         return binding.root
     }
 
