@@ -29,8 +29,8 @@
         android:id="@+id/ic_arrow_forward"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
         android:layout_marginTop="6dp"
+        android:layout_marginEnd="12dp"
         android:src="@drawable/ic_arrow_forward"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -50,6 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:fontFamily="@font/pyeongchangpeacebold"
         android:text="보노보노"
         android:textSize="32sp"
         android:textStyle="bold"
@@ -74,6 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
+        android:textStyle="bold"
         android:background="@drawable/bg_mypage_info_line"
         android:text="010-2014-6432"
         android:textColor="@color/black"
@@ -94,13 +96,14 @@
         app:layout_constraintTop_toBottomOf="@id/mypage_phone" />
 
     <ImageView
+        android:id="@+id/mypage_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
         android:src="@drawable/ic_edit"
-        app:layout_constraintTop_toTopOf="@id/mypage_message_text"
         app:layout_constraintBottom_toBottomOf="@id/mypage_message_text"
         app:layout_constraintStart_toEndOf="@id/mypage_message_text"
-        android:layout_marginStart="12dp"/>
+        app:layout_constraintTop_toTopOf="@id/mypage_message_text" />
 
 
     <TextView
