@@ -7,11 +7,17 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.anycall.MyItem.Companion.dataList
@@ -29,12 +35,40 @@ class ContactsFragment : Fragment() {
     private val DEFAULT_GALLERY_REQUEST_CODE = 123
     private lateinit var selectedImageUri: Uri
     private lateinit var userImg: ImageView
+    private lateinit var adapter: MyAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        setHasOptionsMenu(true)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_contacts, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_list_view -> {
+                // 메뉴 아이템이 클릭되었을 때의 동작을 여기에 작성합니다.
+                binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                adapter.setGridView(false)
+                binding.recyclerView.adapter = adapter
+                true
+            }
+            R.id.action_grid_view -> {
+                // 메뉴 아이템이 클릭되었을 때의 동작을 여기에 작성합니다.
+                binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
+                adapter.setGridView(true)
+                binding.recyclerView.adapter = adapter
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -48,7 +82,7 @@ class ContactsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = MyAdapter(MyItem.dataList)
+        adapter = MyAdapter(MyItem.dataList)
         with(binding) {
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
