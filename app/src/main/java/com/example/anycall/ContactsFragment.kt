@@ -67,8 +67,6 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentContactsBinding.inflate(layoutInflater)
-        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-//        (activity as AppCompatActivity).supportActionBar?.title = "Contacts"
         setHasOptionsMenu(true)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
@@ -297,7 +295,7 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         adapter = MyAdapter(MyItem.dataList)
         with(binding) {
             recyclerView.adapter = adapter
