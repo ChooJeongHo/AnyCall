@@ -47,9 +47,9 @@ class ContactDetailFragment : Fragment() {
         binding.userEmail.text = receiveData?.email
         receiveData?.let {
             if (it.favorite) {
-                binding.ivDetailLike.setImageResource(R.drawable.ic_star_fill)
+                binding.userDetailLike.setImageResource(R.drawable.ic_star_fill)
             } else {
-                binding.ivDetailLike.setImageResource(R.drawable.ic_star_blank1)
+                binding.userDetailLike.setImageResource(R.drawable.ic_star_blank1)
             }
         }
 
@@ -77,12 +77,12 @@ class ContactDetailFragment : Fragment() {
             }
         }
 
-        binding.ivDetailLike.setOnClickListener {
+        binding.userDetailLike.setOnClickListener {
             receiveData?.let {
                 if (MyItem.clickFavorite(it)) {
-                    binding.ivDetailLike.setImageResource(R.drawable.ic_star_fill)
+                    binding.userDetailLike.setImageResource(R.drawable.ic_star_fill)
                 } else {
-                    binding.ivDetailLike.setImageResource(R.drawable.ic_star_blank1)
+                    binding.userDetailLike.setImageResource(R.drawable.ic_star_blank1)
                 }
                 listener?.onFavoriteChanged(it)
             }
