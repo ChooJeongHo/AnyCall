@@ -3,10 +3,12 @@ package com.example.anycall
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
 import android.media.AudioAttributes
 import android.media.RingtoneManager
 import android.net.Uri
@@ -18,6 +20,7 @@ class MyAlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val builder: NotificationCompat.Builder
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // 26 버전 이상
@@ -49,12 +52,11 @@ class MyAlarmReceiver : BroadcastReceiver() {
             builder = NotificationCompat.Builder(context)
         }
         val myItem = intent.getParcelableExtra<MyItem>("MY_ITEM")
-
         // 알림의 기본 정보
         builder.run {
             setSmallIcon(R.drawable.call)
             setWhen(System.currentTimeMillis())
-            setContentTitle("${myItem?.name}에게 전화걸 시간입니다")
+            setContentTitle("지금 ${myItem?.name}님에게 전화를 걸 시간이에요")
             myItem?.icon?.let{
                 setLargeIcon(getBitmapFromUri(context, it))
             }
@@ -62,6 +64,7 @@ class MyAlarmReceiver : BroadcastReceiver() {
 
         manager.notify(11, builder.build())
     }
+
     private fun getBitmapFromUri(context: Context, uri: Uri): Bitmap {
         return try {
             val inputStream = context.contentResolver.openInputStream(uri)
@@ -71,4 +74,5 @@ class MyAlarmReceiver : BroadcastReceiver() {
             BitmapFactory.decodeResource(context.resources, R.drawable.user)
         }
     }
+
 }

@@ -142,7 +142,6 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
                     val newItem = MyItem(
                         icon = getContactPhotoUri(rawContactId) ?:null,
                         name = name ?: "",
-                        like = R.drawable.ic_star_blank,
                         email = getEmail(rawContactId) ?: "",
                         myMessage = "",
                         phoneNum = phoneNumber ?: ""
@@ -358,7 +357,6 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
                         newItem = MyItem(
                                 selectedImageUri,
                                 name,
-                                R.drawable.ic_star_blank,
                                 email,
                                 state,
                                 phone
@@ -368,13 +366,13 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
                         newItem = MyItem(
                             Uri.parse("android.resource://com.example.anycall/drawable/user"),
                             name,
-                            R.drawable.ic_star_blank,
                             email,
                             state,
                             phone
                         )
                     }
                     dataList.add(newItem)
+                    originalDataList = ArrayList(dataList)
                     adapter.notifyDataSetChanged()
                 }
                 dialogView.addDialogOkbutton.apply {
