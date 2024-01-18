@@ -22,6 +22,11 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
         R.color.white,
         R.color.mainColor
     )
+    fun setData(newItem: List<MyItem>){
+        mItems.clear()
+        mItems.addAll(newItem)
+        notifyDataSetChanged()
+    }
 
     companion object {
         const val MY_PERMISSIONS_REQUEST_CALL_PHONE = 123 // You can use any unique value
