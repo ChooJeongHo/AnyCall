@@ -386,8 +386,8 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
         }
 
         adapter.itemClick = object : MyAdapter.ItemClick {
-            override fun onClick(view: View, position: Int) {
-                val detailFragment = ContactDetailFragment.newInstance(dataList[position])
+            override fun onClick(item: MyItem, position: Int) {
+                val detailFragment = ContactDetailFragment.newInstance(item)
                 detailFragment.listener = this@ContactsFragment
                 requireActivity().supportFragmentManager.beginTransaction().apply {
                     replace(R.id.frame,detailFragment )
