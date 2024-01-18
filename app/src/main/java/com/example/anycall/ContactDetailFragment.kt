@@ -1,11 +1,18 @@
 package com.example.anycall
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import com.example.anycall.databinding.FragmentContactDetailBinding
 
@@ -48,6 +55,16 @@ class ContactDetailFragment : Fragment() {
             intent.data = Uri.parse("tel:" + dial)
             startActivity(intent)
         }
+        with(binding){
+            eventFive.setOnClickListener {
+                checkNotificationPermission()
+                sendNotification(5000)
+            }
+            eventTen.setOnClickListener {
+                checkNotificationPermission()
+                sendNotification(10000)
+            }
+        }
     }
     companion object {
         @JvmStatic
@@ -57,5 +74,23 @@ class ContactDetailFragment : Fragment() {
                     putParcelable("EXTRA_USER", myItem)
                 }
             }
+    }
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (!NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()) {
+                val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                    putExtra(Settings.EXTRA_APP_PACKAGE, requireActivity().packageName)
+                }
+                requireActivity().startActivity(intent)
+            }
+        }
+    }
+    private fun sendNotification(timeInMillis: Long) {
+        val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val notificationIntent = Intent(requireContext(), MyAlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+
+        val futureInMillis = SystemClock.elapsedRealtime() + timeInMillis
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
     }
 }
