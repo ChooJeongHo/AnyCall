@@ -23,9 +23,10 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tabTextColor="@color/black"
+            app:tabTextColor="#868686"
             app:tabSelectedTextColor="@color/starColor"
             app:tabRippleColor="@color/white"
+            android:backgroundTint="@color/mainColor"
             app:tabIndicatorColor="@color/starColor"
             app:layout_constraintStart_toStartOf="parent" />
 
