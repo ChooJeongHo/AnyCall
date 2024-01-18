@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment
 import com.example.anycall.databinding.FragmentContactDetailBinding
 
 class ContactDetailFragment : Fragment() {
+
+    private var receiveData: MyItem? = null
     interface OnFavoriteChangedListener{
         fun onFavoriteChanged(item:MyItem)
     }
@@ -38,7 +40,7 @@ class ContactDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val receiveData = arguments?.getParcelable<MyItem>("EXTRA_USER")
+        receiveData = arguments?.getParcelable<MyItem>("EXTRA_USER")
 
         binding.userImage.setImageURI(receiveData?.icon)
         binding.userName.text = receiveData?.name
@@ -109,7 +111,9 @@ class ContactDetailFragment : Fragment() {
     }
     private fun sendNotification(timeInMillis: Long) {
         val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val notificationIntent = Intent(requireContext(), MyAlarmReceiver::class.java)
+        val notificationIntent = Intent(requireContext(), MyAlarmReceiver::class.java).apply {
+            putExtra("MY_ITEM", receiveData)
+        }
         val pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
         val futureInMillis = SystemClock.elapsedRealtime() + timeInMillis

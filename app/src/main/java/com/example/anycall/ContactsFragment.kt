@@ -24,6 +24,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.SystemClock
 import android.provider.Settings
 import androidx.fragment.app.Fragment
@@ -33,6 +34,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -42,6 +44,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.anycall.MyItem.Companion.dataList
 import com.example.anycall.databinding.AddUserDialogBinding
@@ -300,6 +303,32 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
         with(binding) {
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+            //플로팅버튼 스크롤 안할시 사라지게
+            val scrollHandler = Handler()
+            val delayMillis = 2000L // 2초
+            var isScrolling = false
+            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    isScrolling = newState != RecyclerView.SCROLL_STATE_IDLE
+                    if (!isScrolling) {
+                        scrollHandler.postDelayed({
+                            if (!isScrolling) {
+                                floatingBtn.hide()
+                            }
+                        }, delayMillis)
+                    } else {
+                        floatingBtn.show()
+                    }
+                }
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (isScrolling) {
+                        scrollHandler.removeCallbacksAndMessages(null)
+                    }
+                }
+            })
 
             floatingBtn.setOnClickListener {
                 val dialogView = AddUserDialogBinding.inflate(layoutInflater)

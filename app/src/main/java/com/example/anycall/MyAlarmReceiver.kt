@@ -5,11 +5,14 @@ import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.media.AudioAttributes
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import java.io.IOException
 
 class MyAlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
@@ -45,19 +48,27 @@ class MyAlarmReceiver : BroadcastReceiver() {
             // 26 버전 이하
             builder = NotificationCompat.Builder(context)
         }
+        val myItem = intent.getParcelableExtra<MyItem>("MY_ITEM")
 
         // 알림의 기본 정보
         builder.run {
-            setSmallIcon(R.mipmap.ic_launcher)
+            setSmallIcon(R.drawable.call)
             setWhen(System.currentTimeMillis())
-            setContentTitle("설정하신 알림이 왔습니다.")
-            setContentText("알림이 잘 보이시나요.")
-            setStyle(
-                NotificationCompat.BigTextStyle()
-                    .bigText("이것은 긴텍스트 샘플입니다. 아주 긴 텍스트를 쓸때는 여기다 하면 됩니다.이것은 긴텍스트 샘플입니다. 아주 긴 텍스트를 쓸때는 여기다 하면 됩니다 . 이것은 긴텍스트 샘플입니다 . 아주 긴 텍스트를 쓸때는 여기다 하면 됩니다 .")
-            )
+            setContentTitle("${myItem?.name}에게 전화걸 시간입니다")
+            myItem?.icon?.let{
+                setLargeIcon(getBitmapFromUri(context, it))
+            }
         }
 
         manager.notify(11, builder.build())
+    }
+    private fun getBitmapFromUri(context: Context, uri: Uri): Bitmap {
+        return try {
+            val inputStream = context.contentResolver.openInputStream(uri)
+            BitmapFactory.decodeStream(inputStream)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            BitmapFactory.decodeResource(context.resources, R.drawable.user)
+        }
     }
 }
