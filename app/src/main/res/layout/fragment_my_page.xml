@@ -10,20 +10,50 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/mypage_viewpager"
         android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_height="300dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <me.relex.circleindicator.CircleIndicator3
-        android:id="@+id/mypage_viewpager_indicator"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        app:ci_drawable="@drawable/indicator_orange"
-        app:ci_drawable_unselected="@drawable/indicator_white"
+    <TextView
+        android:id="@+id/item_favorite_empty_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pyeongchangpeacebold"
+        android:text="친한 친구가 없으시군요\n 친한 친구를 사귀어보아요!"
+        android:textAlignment="center"
+        android:textColor="@color/starColor"
+        android:textSize="33sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/mypage_viewpager"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/mypage_viewpager" />
+
+<!--    <me.relex.circleindicator.CircleIndicator3-->
+<!--        android:id="@+id/mypage_viewpager_indicator"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="30dp"-->
+<!--        app:ci_drawable="@drawable/indicator_orange"-->
+<!--        app:ci_drawable_unselected="@drawable/indicator_white"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/mypage_viewpager"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
+
+    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+        android:id="@+id/mypage_viewpager_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        app:dotsColor="@color/white"
+        app:dotsCornerRadius="8dp"
+        app:dotsSize="10dp"
+        app:dotsSpacing="6dp"
+        app:dotsWidthFactor="2.5"
+        app:layout_constraintBottom_toBottomOf="@id/mypage_viewpager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:progressMode="true"
+        app:selectedDotColor="@color/starColor" />
 
     <ImageView
         android:id="@+id/ic_arrow_back"

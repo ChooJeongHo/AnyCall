@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +22,7 @@ class MyPageFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private val binding by lazy { FragmentMyPageBinding.inflate(layoutInflater) }
-    private val favoriteAdapter by lazy { FavoriteAdapter() }
+    private val favoriteAdapter by lazy { FavoriteAdapter(binding.itemFavoriteEmptyText) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +44,12 @@ class MyPageFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewPagerVisible()
+        favoriteAdapter.submitList(MyItem.dataList.filter { it.favorite }.toMutableList())
+    }
+
     private fun initInfo() {
         with(binding) {
             mypageProfileName.text = User.getUser().name
@@ -59,11 +66,18 @@ class MyPageFragment : Fragment() {
     private fun initViewpager() {
         favoriteAdapter.apply {
             submitList(MyItem.dataList.filter { it.favorite }.toMutableList())
-
             listener = object : FavoriteAdapter.OnItemClickListener {
-                override fun onItemClick(data: MyItem, pos: Int) {
+                override fun onPhoneClick(data: MyItem, pos: Int) {
                     val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:${data.phoneNum}"))
                     startActivity(intent)
+                }
+
+                override fun onItemClick(data: MyItem) {
+                    requireActivity().supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.frame, ContactDetailFragment.newInstance(data) )
+                        setReorderingAllowed(true)
+                        addToBackStack("")
+                    }.commit()
                 }
             }
         }
@@ -73,12 +87,29 @@ class MyPageFragment : Fragment() {
                 adapter = favoriteAdapter
                 isUserInputEnabled = false
             }
-            mypageViewpagerIndicator.setViewPager(binding.mypageViewpager)
+            binding.mypageViewpagerIndicator.attachTo(binding.mypageViewpager)
         }
 
     }
 
+    private fun viewPagerVisible() {
+        if (MyItem.dataList.filter { it.favorite }.toMutableList().size == 0) {
+            with(binding) {
+                icArrowBack.visibility = View.GONE
+                icArrowForward.visibility = View.GONE
+                mypageViewpagerIndicator.visibility = View.GONE
+            }
+        } else {
+            with(binding) {
+                icArrowBack.visibility = View.VISIBLE
+                icArrowForward.visibility = View.VISIBLE
+                mypageViewpagerIndicator.visibility = View.VISIBLE
+            }
+        }
+    }
+
     private fun initViewpagerButton() {
+        viewPagerVisible()
         with(binding) {
             icArrowBack.setOnClickListener {
                 val current = mypageViewpager.currentItem
@@ -124,7 +155,6 @@ class MyPageFragment : Fragment() {
         dialogView.mypageDialogCancel.setOnClickListener {
             alertDialog.dismiss()
         }
-
         alertDialog.show()
     }
 

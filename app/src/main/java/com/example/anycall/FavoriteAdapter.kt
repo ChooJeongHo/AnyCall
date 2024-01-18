@@ -1,7 +1,7 @@
 package com.example.anycall
 
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.anycall.databinding.ItemFavoritesBinding
 
-class FavoriteAdapter(): ListAdapter<MyItem, FavoriteAdapter.FavoriteViewHolder>(diffUtil) {
-
+class FavoriteAdapter(private val emptyView: View): ListAdapter<MyItem, FavoriteAdapter.FavoriteViewHolder>(diffUtil) {
     interface OnItemClickListener {
-        fun onItemClick(data: MyItem, pos: Int)
+        fun onPhoneClick(data: MyItem, pos: Int)
+        fun onItemClick(data: MyItem)
     }
     var listener: OnItemClickListener? = null
 
@@ -29,6 +29,18 @@ class FavoriteAdapter(): ListAdapter<MyItem, FavoriteAdapter.FavoriteViewHolder>
         return currentList.size
     }
 
+    override fun onCurrentListChanged(
+        previousList: MutableList<MyItem>,
+        currentList: MutableList<MyItem>
+    ) {
+        if (currentList.size == 0) {
+            emptyView.visibility = View.VISIBLE
+        } else {
+            emptyView.visibility = View.GONE
+        }
+        super.onCurrentListChanged(previousList, currentList)
+    }
+
     inner class FavoriteViewHolder(private val binding: ItemFavoritesBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MyItem) {
             with(binding) {
@@ -37,9 +49,11 @@ class FavoriteAdapter(): ListAdapter<MyItem, FavoriteAdapter.FavoriteViewHolder>
                     .into(itemFavoriteImage)
                 itemFavoriteName.text = item.name
                 itemFavoriteCall.setOnClickListener {
-                    listener?.onItemClick(item, adapterPosition)
+                    listener?.onPhoneClick(item, adapterPosition)
                 }
-
+                root.setOnClickListener {
+                    listener?.onItemClick(item)
+                }
             }
         }
     }
