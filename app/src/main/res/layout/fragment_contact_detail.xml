@@ -156,19 +156,37 @@
                 app:layout_constraintTop_toBottomOf="@id/user_email" />
 
             <TextView
-                android:id="@+id/user_event"
-                android:layout_width="0dp"
+                android:id="@+id/event_five"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bg_mypage_info_line"
-                android:text="Event"
+                android:text="5분후 알림"
                 android:textColor="@color/black"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="@id/txt_event"
-                app:layout_constraintTop_toBottomOf="@id/txt_event"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:textSize="16sp"
+                android:layout_marginLeft="50dp"
+                android:gravity="center"
+                android:fontFamily="@font/bmjua"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_event" />
+
+            <TextView
+                android:id="@+id/event_ten"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_mypage_info_line"
+                android:fontFamily="@font/bmjua"
+                android:gravity="center"
+                android:text="10분후 알림"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_marginLeft="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/event_five"
+                app:layout_constraintStart_toEndOf="@+id/event_five"
+                app:layout_constraintTop_toTopOf="@+id/event_five" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

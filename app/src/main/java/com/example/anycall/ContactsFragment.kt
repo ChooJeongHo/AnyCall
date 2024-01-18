@@ -38,6 +38,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.anycall.MyItem.Companion.dataList
+import com.example.anycall.databinding.AddUserDialogBinding
 import com.example.anycall.databinding.FragmentContactsBinding
 import java.io.File
 import java.io.FileOutputStream
@@ -271,50 +272,28 @@ class ContactsFragment : Fragment() {
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
             floatingBtn.setOnClickListener {
-                val builder = AlertDialog.Builder(requireContext())
-                builder.setTitle("커스텀 다이얼로그")
-                builder.setIcon(R.mipmap.ic_launcher)
-
-                val v1 = layoutInflater.inflate(R.layout.add_user_dialog, null)
-                builder.setView(v1)
-
-                userImg = v1.findViewById(R.id.addUserImg)
-                val nameEdit = v1.findViewById<EditText>(R.id.addUserName)
-                val phoneEdit = v1.findViewById<EditText>(R.id.addUserPhone)
-                val statusEdit = v1.findViewById<EditText>(R.id.addUserStatus)
-                val emailEdit = v1.findViewById<EditText>(R.id.addUserEmail)
-                val btnOff = v1.findViewById<Button>(R.id.btn_notify_off)
-                val btnFive = v1.findViewById<Button>(R.id.btn_notify_five)
-                val btnTen = v1.findViewById<Button>(R.id.btn_notify_ten)
-                val btnFifteen = v1.findViewById<Button>(R.id.btn_notify_fifteen)
-
-                userImg.setOnClickListener {
+                val dialogView = AddUserDialogBinding.inflate(layoutInflater)
+                val alertDialog = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
+                    .setView(dialogView.root)
+                    .setCancelable(false)
+                    .create()
+                dialogView.addUserImg.setOnClickListener {
                     val intent = Intent()
                     intent.type = "image/*"
                     intent.action = Intent.ACTION_GET_CONTENT
                     startActivityForResult(intent, DEFAULT_GALLERY_REQUEST_CODE)
                 }
-                btnOff.setOnClickListener {
-                    checkNotificationPermission()
-                    sendNotification(0)
-                }
-                btnFive.setOnClickListener {
-                    checkNotificationPermission()
-                    sendNotification(5000)
-                }
-                btnTen.setOnClickListener {
-                    checkNotificationPermission()
-                    sendNotification(10000)
-                }
-                btnFifteen.setOnClickListener {
-                    checkNotificationPermission()
-                    sendNotification(15000)
+                userImg = dialogView.addUserImg
+                with(dialogView){
+                    addDialogCancel.setOnClickListener {
+                        alertDialog.dismiss()
+                    }
                 }
                 val listener = DialogInterface.OnClickListener { p0, p1 ->
-                    val name = nameEdit.text.toString()
-                    val phone = phoneEdit.text.toString()
-                    val state = statusEdit.text.toString()
-                    val email = emailEdit.text.toString()
+                    val name = dialogView.addUserName.text.toString()
+                    val phone = dialogView.addUserPhone.text.toString()
+                    val state = dialogView.addUserStatus.text.toString()
+                    val email = dialogView.addUserEmail.text.toString()
                     val newItem: MyItem
                     if(isImageSelected){
                         newItem = MyItem(
@@ -337,18 +316,16 @@ class ContactsFragment : Fragment() {
                         )
                     }
                     dataList.add(newItem)
-
-
                     adapter.notifyDataSetChanged()
                 }
-
-                builder.setPositiveButton("확인", listener)
-                builder.setNegativeButton("취소", null)
-
-                builder.show()
-
+                dialogView.addDialogOkbutton.apply {
+                    setOnClickListener {
+                        listener.onClick(null, DialogInterface.BUTTON_POSITIVE)
+                        alertDialog.dismiss()
+                    }
+                }
+                alertDialog.show()
             }
-
         }
 
         adapter.itemClick = object : MyAdapter.ItemClick {
@@ -360,26 +337,6 @@ class ContactsFragment : Fragment() {
                 }.commit()
             }
 
-        }
-    }
-
-    private fun sendNotification(timeInMillis: Long) {
-        val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val notificationIntent = Intent(requireContext(), MyAlarmReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-
-        val futureInMillis = SystemClock.elapsedRealtime() + timeInMillis
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
-    }
-
-    private fun checkNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (!NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()) {
-                val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-                    putExtra(Settings.EXTRA_APP_PACKAGE, requireActivity().packageName)
-                }
-                requireActivity().startActivity(intent)
-            }
         }
     }
 
