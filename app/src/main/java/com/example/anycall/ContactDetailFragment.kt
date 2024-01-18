@@ -10,6 +10,10 @@ import androidx.fragment.app.Fragment
 import com.example.anycall.databinding.FragmentContactDetailBinding
 
 class ContactDetailFragment : Fragment() {
+    interface OnFavoriteChangedListener{
+        fun onFavoriteChanged(item:MyItem)
+    }
+    var listener: OnFavoriteChangedListener? = null
 
     private val binding by lazy { FragmentContactDetailBinding.inflate(layoutInflater) }
 
@@ -34,6 +38,13 @@ class ContactDetailFragment : Fragment() {
         binding.userPhone.text = receiveData?.phoneNum
         binding.userMessage.text = receiveData?.myMessage
         binding.userEmail.text = receiveData?.email
+        receiveData?.let {
+            if (it.favorite) {
+                binding.ivDetailLike.setImageResource(R.drawable.ic_star_fill)
+            } else {
+                binding.ivDetailLike.setImageResource(R.drawable.ic_star_blank1)
+            }
+        }
 
         binding.btnMessage.setOnClickListener {
             val message = receiveData?.phoneNum
@@ -47,6 +58,17 @@ class ContactDetailFragment : Fragment() {
             val intent = Intent(Intent.ACTION_DIAL)
             intent.data = Uri.parse("tel:" + dial)
             startActivity(intent)
+        }
+
+        binding.ivDetailLike.setOnClickListener {
+            receiveData?.let {
+                if (MyItem.clickFavorite(it)) {
+                    binding.ivDetailLike.setImageResource(R.drawable.ic_star_fill)
+                } else {
+                    binding.ivDetailLike.setImageResource(R.drawable.ic_star_blank1)
+                }
+                listener?.onFavoriteChanged(it)
+            }
         }
     }
     companion object {
