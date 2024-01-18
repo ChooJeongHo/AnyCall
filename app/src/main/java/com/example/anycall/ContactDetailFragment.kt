@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import com.example.anycall.databinding.FragmentContactDetailBinding
+import java.text.DecimalFormat
 
 class ContactDetailFragment : Fragment() {
     interface OnFavoriteChangedListener{
@@ -40,10 +41,13 @@ class ContactDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         receiveData = arguments?.getParcelable<MyItem>("EXTRA_USER")
-
         binding.userImage.setImageURI(receiveData?.icon)
         binding.userName.text = receiveData?.name
-        binding.userPhone.text = receiveData?.phoneNum
+        val formattedPhoneNum = StringBuilder(receiveData?.phoneNum)
+            .insert(3, "-")
+            .insert(8, "-")
+            .toString()
+        binding.userPhone.text = formattedPhoneNum
         binding.userMessage.text = receiveData?.myMessage
         binding.userEmail.text = receiveData?.email
         receiveData?.let {

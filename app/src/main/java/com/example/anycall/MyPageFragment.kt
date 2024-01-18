@@ -53,7 +53,11 @@ class MyPageFragment : Fragment() {
     private fun initInfo() {
         with(binding) {
             mypageProfileName.text = User.getUser().name
-            mypagePhone.text = User.getUser().phoneNum
+            val formattedPhoneNum = StringBuilder(User.getUser().phoneNum)
+                .insert(3, "-")
+                .insert(8, "-")
+                .toString()
+            mypagePhone.text = formattedPhoneNum
             mypageMessage.text = User.getUser().myMessage
             mypageEmail.text = User.getUser().email
         }

@@ -31,6 +31,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -140,7 +141,7 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
 
                     // 여기서 필요한 데이터를 가져와서 MyItem 객체를 생성하여 dataList에 추가
                     val newItem = MyItem(
-                        icon = getContactPhotoUri(rawContactId) ?:null,
+                        icon = getContactPhotoUri(rawContactId) ?: null,
                         name = name ?: "",
                         email = getEmail(rawContactId) ?: "",
                         myMessage = "",
@@ -173,7 +174,8 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
         var email: String? = null
         emailCursor?.use {
             if (it.moveToFirst()) {
-                val emailColumnIndex = it.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS)
+                val emailColumnIndex =
+                    it.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS)
                 email = it.getString(emailColumnIndex)
             }
         }
@@ -248,6 +250,7 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
                 binding.recyclerView.adapter = adapter
                 true
             }
+
             R.id.action_grid_view -> {
                 // 메뉴 아이템이 클릭되었을 때의 동작을 여기에 작성합니다.
                 binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
@@ -255,6 +258,7 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
                 binding.recyclerView.adapter = adapter
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -272,6 +276,7 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
 
         return binding.root
     }
+
     var searchViewTextListener: SearchView.OnQueryTextListener =
         object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
@@ -285,6 +290,7 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
                 return true
             }
         }
+
     private fun filterData(query: String) {
         // 검색어에 따라 데이터를 필터링하여 새로운 리스트 생성
         val filteredList = originalDataList.filter { item ->
@@ -321,6 +327,7 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
                         floatingBtn.show()
                     }
                 }
+
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     if (isScrolling) {
@@ -342,27 +349,35 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
                     startActivityForResult(intent, DEFAULT_GALLERY_REQUEST_CODE)
                 }
                 userImg = dialogView.addUserImg
-                with(dialogView){
+                with(dialogView) {
                     addDialogCancel.setOnClickListener {
                         alertDialog.dismiss()
                     }
                 }
                 val listener = DialogInterface.OnClickListener { p0, p1 ->
-                    val name = dialogView.addUserName.text.toString()
-                    val phone = dialogView.addUserPhone.text.toString()
-                    val state = dialogView.addUserStatus.text.toString()
-                    val email = dialogView.addUserEmail.text.toString()
+                    val name = dialogView.addUserName.text.toString().trim()
+                    val phone = dialogView.addUserPhone.text.toString().trim()
+                    val state = dialogView.addUserStatus.text.toString().trim()
+                    val email = dialogView.addUserEmail.text.toString().trim()
                     val newItem: MyItem
-                    if(isImageSelected){
+                    if (name.isBlank() || phone.isBlank()) {
+                        Toast.makeText(requireContext(), "이름과 번호는 꼭 입력해주세요.", Toast.LENGTH_SHORT).show()
+                        return@OnClickListener
+                    }
+                    if(phone.length != 11 || phone.contains("-")){
+                        Toast.makeText(requireContext(), "-를 제외한 11자리를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                        return@OnClickListener
+                    }
+                    if (isImageSelected) {
                         newItem = MyItem(
-                                selectedImageUri,
-                                name,
-                                email,
-                                state,
-                                phone
-                            )
+                            selectedImageUri,
+                            name,
+                            email,
+                            state,
+                            phone
+                        )
                         isImageSelected = !isImageSelected
-                    } else{
+                    } else {
                         newItem = MyItem(
                             Uri.parse("android.resource://com.example.anycall/drawable/user"),
                             name,
@@ -374,11 +389,11 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
                     dataList.add(newItem)
                     originalDataList = ArrayList(dataList)
                     adapter.notifyDataSetChanged()
+                    alertDialog.dismiss()
                 }
                 dialogView.addDialogOkbutton.apply {
                     setOnClickListener {
                         listener.onClick(null, DialogInterface.BUTTON_POSITIVE)
-                        alertDialog.dismiss()
                     }
                 }
                 alertDialog.show()
@@ -390,7 +405,7 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
                 val detailFragment = ContactDetailFragment.newInstance(item)
                 detailFragment.listener = this@ContactsFragment
                 requireActivity().supportFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame,detailFragment )
+                    replace(R.id.frame, detailFragment)
                     setReorderingAllowed(true)
                     addToBackStack("")
                 }.commit()

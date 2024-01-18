@@ -56,16 +56,23 @@
         android:id="@+id/addUserPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="phone"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:hint="Phone"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:textColor="#D3D3D3"
+        android:text="-를 제외한 11자리"/>
     <EditText
         android:id="@+id/addUserStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:hint="feel"/>
+        android:hint="메모"/>
     <EditText
         android:id="@+id/addUserEmail"
         android:layout_width="match_parent"
