@@ -50,7 +50,7 @@ import com.example.anycall.databinding.FragmentContactsBinding
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class ContactsFragment : Fragment() {
+class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedListener {
     private var isImageSelected = false
     private var param1: String? = null
     private var param2: String? = null
@@ -330,15 +330,17 @@ class ContactsFragment : Fragment() {
 
         adapter.itemClick = object : MyAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
+                val detailFragment = ContactDetailFragment.newInstance(dataList[position])
+                detailFragment.listener = this@ContactsFragment
                 requireActivity().supportFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame, ContactDetailFragment.newInstance(dataList[position]))
+                    replace(R.id.frame,detailFragment )
                     setReorderingAllowed(true)
                     addToBackStack("")
                 }.commit()
             }
-
         }
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -368,5 +370,9 @@ class ContactsFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onFavoriteChanged(item: MyItem) {
+        adapter.notifyDataSetChanged()
     }
 }

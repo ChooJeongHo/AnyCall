@@ -28,6 +28,7 @@
             app:tabRippleColor="@color/white"
             app:tabIndicatorColor="@color/starColor"
             app:layout_constraintStart_toStartOf="parent" />
+
         <FrameLayout
             android:id="@+id/frame"
             android:layout_width="match_parent"
