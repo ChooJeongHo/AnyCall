@@ -11,8 +11,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.anycall.databinding.ItemBinding
 import androidx.viewbinding.ViewBinding
+import com.example.anycall.databinding.ItemBinding
 import com.example.anycall.databinding.ItemGridBinding
 
 class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapter.Holder>(),
