@@ -21,7 +21,7 @@ class MyPageFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private val binding by lazy { FragmentMyPageBinding.inflate(layoutInflater) }
-    private val favoriteAdapter by lazy { FavoriteAdapter() }
+    private val favoriteAdapter by lazy { FavoriteAdapter(binding.itemFavoriteEmptyText) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +45,7 @@ class MyPageFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        viewPagerVisible()
         favoriteAdapter.submitList(MyItem.dataList.filter { it.favorite }.toMutableList())
     }
 
@@ -60,7 +61,6 @@ class MyPageFragment : Fragment() {
     private fun initViewpager() {
         favoriteAdapter.apply {
             submitList(MyItem.dataList.filter { it.favorite }.toMutableList())
-
             listener = object : FavoriteAdapter.OnItemClickListener {
                 override fun onPhoneClick(data: MyItem, pos: Int) {
                     val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:${data.phoneNum}"))
@@ -87,7 +87,24 @@ class MyPageFragment : Fragment() {
 
     }
 
+    private fun viewPagerVisible() {
+        if (MyItem.dataList.filter { it.favorite }.toMutableList().size == 0) {
+            with(binding) {
+                icArrowBack.visibility = View.GONE
+                icArrowForward.visibility = View.GONE
+                mypageViewpagerIndicator.visibility = View.GONE
+            }
+        } else {
+            with(binding) {
+                icArrowBack.visibility = View.VISIBLE
+                icArrowForward.visibility = View.VISIBLE
+                mypageViewpagerIndicator.visibility = View.VISIBLE
+            }
+        }
+    }
+
     private fun initViewpagerButton() {
+        viewPagerVisible()
         with(binding) {
             icArrowBack.setOnClickListener {
                 val current = mypageViewpager.currentItem
