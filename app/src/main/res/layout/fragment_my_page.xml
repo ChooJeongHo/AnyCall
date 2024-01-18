@@ -30,15 +30,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/mypage_viewpager" />
 
-    <me.relex.circleindicator.CircleIndicator3
+<!--    <me.relex.circleindicator.CircleIndicator3-->
+<!--        android:id="@+id/mypage_viewpager_indicator"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="30dp"-->
+<!--        app:ci_drawable="@drawable/indicator_orange"-->
+<!--        app:ci_drawable_unselected="@drawable/indicator_white"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/mypage_viewpager"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
+
+    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
         android:id="@+id/mypage_viewpager_indicator"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
-        app:ci_drawable="@drawable/indicator_orange"
-        app:ci_drawable_unselected="@drawable/indicator_white"
+        app:dotsColor="@color/white"
+        app:dotsCornerRadius="8dp"
+        app:dotsSize="10dp"
+        app:dotsSpacing="6dp"
+        app:dotsWidthFactor="2.5"
         app:layout_constraintBottom_toBottomOf="@id/mypage_viewpager"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:progressMode="true"
+        app:selectedDotColor="@color/starColor" />
 
     <ImageView
         android:id="@+id/ic_arrow_back"

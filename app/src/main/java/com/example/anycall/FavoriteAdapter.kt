@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.example.anycall.databinding.ItemFavoritesBinding
 
 class FavoriteAdapter(private val emptyView: View): ListAdapter<MyItem, FavoriteAdapter.FavoriteViewHolder>(diffUtil) {
-    private lateinit var binding: ItemFavoritesBinding
     interface OnItemClickListener {
         fun onPhoneClick(data: MyItem, pos: Int)
         fun onItemClick(data: MyItem)
@@ -18,7 +17,7 @@ class FavoriteAdapter(private val emptyView: View): ListAdapter<MyItem, Favorite
     var listener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
-        binding = ItemFavoritesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemFavoritesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FavoriteViewHolder(binding)
     }
 
@@ -42,7 +41,7 @@ class FavoriteAdapter(private val emptyView: View): ListAdapter<MyItem, Favorite
         super.onCurrentListChanged(previousList, currentList)
     }
 
-    inner class FavoriteViewHolder(binding: ItemFavoritesBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class FavoriteViewHolder(private val binding: ItemFavoritesBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MyItem) {
             with(binding) {
                 Glide.with(root)
