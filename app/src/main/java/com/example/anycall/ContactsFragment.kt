@@ -28,6 +28,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.SearchView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -50,19 +51,22 @@ import java.io.OutputStream
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class ContactsFragment : Fragment() {
+class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedListener {
     private var isImageSelected = false
     private var param1: String? = null
     private var param2: String? = null
-    private val binding by lazy { FragmentContactsBinding.inflate(layoutInflater) }
+    private lateinit var binding: FragmentContactsBinding
     private val DEFAULT_GALLERY_REQUEST_CODE = 123
     private lateinit var selectedImageUri: Uri
     private lateinit var userImg: ImageView
     private lateinit var adapter: MyAdapter
     private var isDataLoaded = false
+    private lateinit var searchView: SearchView
+    private lateinit var originalDataList: MutableList<MyItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = FragmentContactsBinding.inflate(layoutInflater)
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 //        (activity as AppCompatActivity).supportActionBar?.title = "Contacts"
         setHasOptionsMenu(true)
@@ -259,8 +263,36 @@ class ContactsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        binding = FragmentContactsBinding.inflate(inflater, container, false)
         initPermission()
+
+        originalDataList = ArrayList(dataList)
+        searchView = binding.searchViewPhoneBook
+        searchView.setOnQueryTextListener(searchViewTextListener)
+
         return binding.root
+    }
+    var searchViewTextListener: SearchView.OnQueryTextListener =
+        object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                // 검색 버튼을 눌렀을 때의 동작
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                // 텍스트가 변경될 때마다 호출되는 메서드
+                filterData(newText)
+                return true
+            }
+        }
+    private fun filterData(query: String) {
+        // 검색어에 따라 데이터를 필터링하여 새로운 리스트 생성
+        val filteredList = originalDataList.filter { item ->
+            item.name.contains(query, ignoreCase = true)
+        }.toMutableList()
+
+        // 어댑터에 필터링된 데이터 설정
+        adapter.setData(filteredList)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -330,15 +362,17 @@ class ContactsFragment : Fragment() {
 
         adapter.itemClick = object : MyAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
+                val detailFragment = ContactDetailFragment.newInstance(dataList[position])
+                detailFragment.listener = this@ContactsFragment
                 requireActivity().supportFragmentManager.beginTransaction().apply {
-                    replace(R.id.frame, ContactDetailFragment.newInstance(dataList[position]))
+                    replace(R.id.frame,detailFragment )
                     setReorderingAllowed(true)
                     addToBackStack("")
                 }.commit()
             }
-
         }
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -368,5 +402,9 @@ class ContactsFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onFavoriteChanged(item: MyItem) {
+        adapter.notifyDataSetChanged()
     }
 }

@@ -4,6 +4,7 @@ package com.example.anycall
 import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,11 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
         R.color.white,
         R.color.mainColor
     )
+    fun setData(newItem: List<MyItem>){
+        mItems.clear()
+        mItems.addAll(newItem)
+        notifyDataSetChanged()
+    }
 
     companion object {
         const val MY_PERMISSIONS_REQUEST_CALL_PHONE = 123 // You can use any unique value
@@ -88,10 +94,22 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
         holder.itemView.setOnClickListener {
             itemClick?.onClick(it, position)
         }
+        if (mItems[position].favorite) {
+            holder.like.setImageResource(R.drawable.ic_star_fill)
+        } else {
+            holder.like.setImageResource(R.drawable.ic_star_blank)
+        }
+        holder.like.apply {
+            setOnClickListener {
+                if (MyItem.clickFavorite(mItems[position])) {
+                    setImageResource(R.drawable.ic_star_fill)
+                } else {
+                    setImageResource(R.drawable.ic_star_blank1)
+                }
+            }
+        }
         holder.iconImageView.setImageURI(mItems[position].icon)
         holder.name.text = mItems[position].name
-        holder.like.setImageResource(mItems[position].like)
-
         holder.itemView.setOnLongClickListener {
             AlertDialog.Builder(it.context)
                 .setTitle("삭제 확인")

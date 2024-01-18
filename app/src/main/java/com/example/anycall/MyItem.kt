@@ -12,7 +12,7 @@ data class MyItem(
     val email: String,
     var myMessage:String,
     val phoneNum:String,
-    val favorite: Boolean = false,
+    var favorite: Boolean = false,
     var isSwiped: Boolean = false
 ) : Parcelable {
     companion object {
@@ -32,7 +32,11 @@ data class MyItem(
             MyItem(Uri.parse("android.resource://com.example.anycall/drawable/favorite_img3"), "송중기", R.drawable.ic_star_blank,"song113@hanmail.net", "월요병 지옥이야", "01059395027",true),
             MyItem(Uri.parse("android.resource://com.example.anycall/drawable/favorite_img4"), "한소희", R.drawable.ic_star_blank,"han8831@naver.com", "월요병 지옥이야", "01033505836",true)
         )
-
+        fun clickFavorite(myItem: MyItem): Boolean {
+            val index = dataList.indexOf(myItem)
+            dataList[index].favorite = !dataList[index].favorite
+            return dataList[index].favorite
+        }
     }
 
 
