@@ -36,7 +36,7 @@
                 android:layout_height="70dp"
                 android:layout_margin="12dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_star_blank1"
+                android:src="@drawable/ic_star_blank"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

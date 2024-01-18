@@ -49,7 +49,7 @@ class ContactDetailFragment : Fragment() {
             if (it.favorite) {
                 binding.ivDetailLike.setImageResource(R.drawable.ic_star_fill)
             } else {
-                binding.ivDetailLike.setImageResource(R.drawable.ic_star_blank1)
+                binding.ivDetailLike.setImageResource(R.drawable.ic_star_blank)
             }
         }
 
@@ -82,7 +82,7 @@ class ContactDetailFragment : Fragment() {
                 if (MyItem.clickFavorite(it)) {
                     binding.ivDetailLike.setImageResource(R.drawable.ic_star_fill)
                 } else {
-                    binding.ivDetailLike.setImageResource(R.drawable.ic_star_blank1)
+                    binding.ivDetailLike.setImageResource(R.drawable.ic_star_blank)
                 }
                 listener?.onFavoriteChanged(it)
             }

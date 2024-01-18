@@ -99,7 +99,7 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
                 if (MyItem.clickFavorite(mItems[position])) {
                     setImageResource(R.drawable.ic_star_fill)
                 } else {
-                    setImageResource(R.drawable.ic_star_blank1)
+                    setImageResource(R.drawable.ic_star_blank)
                 }
             }
         }
