@@ -11,7 +11,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
 
-class MyAlarmReceiver : BroadcastReceiver() {
+class MyAlarmReceiver : BroadcastReceiver(){
     override fun onReceive(context: Context, intent: Intent) {
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val builder: NotificationCompat.Builder
