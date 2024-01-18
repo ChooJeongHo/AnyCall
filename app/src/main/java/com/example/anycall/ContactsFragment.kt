@@ -15,6 +15,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.SystemClock
 import android.provider.ContactsContract
 import android.provider.Settings
@@ -25,6 +26,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -37,6 +39,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.anycall.MyItem.Companion.dataList
 import com.example.anycall.databinding.AddUserDialogBinding
@@ -139,7 +142,6 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
                     val newItem = MyItem(
                         icon = getContactPhotoUri(rawContactId) ?:null,
                         name = name ?: "",
-                        like = R.drawable.ic_star_blank,
                         email = getEmail(rawContactId) ?: "",
                         myMessage = "",
                         phoneNum = phoneNumber ?: ""
@@ -301,6 +303,32 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+            //플로팅버튼 스크롤 안할시 사라지게
+            val scrollHandler = Handler()
+            val delayMillis = 2000L // 2초
+            var isScrolling = false
+            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    isScrolling = newState != RecyclerView.SCROLL_STATE_IDLE
+                    if (!isScrolling) {
+                        scrollHandler.postDelayed({
+                            if (!isScrolling) {
+                                floatingBtn.hide()
+                            }
+                        }, delayMillis)
+                    } else {
+                        floatingBtn.show()
+                    }
+                }
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (isScrolling) {
+                        scrollHandler.removeCallbacksAndMessages(null)
+                    }
+                }
+            })
+
             floatingBtn.setOnClickListener {
                 val dialogView = AddUserDialogBinding.inflate(layoutInflater)
                 val alertDialog = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
@@ -329,7 +357,6 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
                         newItem = MyItem(
                                 selectedImageUri,
                                 name,
-                                R.drawable.ic_star_blank,
                                 email,
                                 state,
                                 phone
@@ -339,13 +366,13 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
                         newItem = MyItem(
                             Uri.parse("android.resource://com.example.anycall/drawable/user"),
                             name,
-                            R.drawable.ic_star_blank,
                             email,
                             state,
                             phone
                         )
                     }
                     dataList.add(newItem)
+                    originalDataList = ArrayList(dataList)
                     adapter.notifyDataSetChanged()
                 }
                 dialogView.addDialogOkbutton.apply {

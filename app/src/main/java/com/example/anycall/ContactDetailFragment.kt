@@ -20,6 +20,7 @@ class ContactDetailFragment : Fragment() {
     interface OnFavoriteChangedListener{
         fun onFavoriteChanged(item:MyItem)
     }
+    private var receiveData: MyItem? = null
     var listener: OnFavoriteChangedListener? = null
 
     private val binding by lazy { FragmentContactDetailBinding.inflate(layoutInflater) }
@@ -38,7 +39,7 @@ class ContactDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val receiveData = arguments?.getParcelable<MyItem>("EXTRA_USER")
+        receiveData = arguments?.getParcelable<MyItem>("EXTRA_USER")
 
         binding.userImage.setImageURI(receiveData?.icon)
         binding.userName.text = receiveData?.name
@@ -47,9 +48,9 @@ class ContactDetailFragment : Fragment() {
         binding.userEmail.text = receiveData?.email
         receiveData?.let {
             if (it.favorite) {
-                binding.userDetailLike.setImageResource(R.drawable.ic_star_fill)
+                binding.ivDetailLike.setImageResource(R.drawable.ic_star_fill)
             } else {
-                binding.userDetailLike.setImageResource(R.drawable.ic_star_blank1)
+                binding.ivDetailLike.setImageResource(R.drawable.ic_star_blank)
             }
         }
 
@@ -77,12 +78,12 @@ class ContactDetailFragment : Fragment() {
             }
         }
 
-        binding.userDetailLike.setOnClickListener {
+        binding.ivDetailLike.setOnClickListener {
             receiveData?.let {
                 if (MyItem.clickFavorite(it)) {
-                    binding.userDetailLike.setImageResource(R.drawable.ic_star_fill)
+                    binding.ivDetailLike.setImageResource(R.drawable.ic_star_fill)
                 } else {
-                    binding.userDetailLike.setImageResource(R.drawable.ic_star_blank1)
+                    binding.ivDetailLike.setImageResource(R.drawable.ic_star_blank)
                 }
                 listener?.onFavoriteChanged(it)
             }
@@ -109,7 +110,9 @@ class ContactDetailFragment : Fragment() {
     }
     private fun sendNotification(timeInMillis: Long) {
         val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val notificationIntent = Intent(requireContext(), MyAlarmReceiver::class.java)
+        val notificationIntent = Intent(requireContext(), MyAlarmReceiver::class.java).apply {
+            putExtra("MY_ITEM",receiveData)
+        }
         val pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
         val futureInMillis = SystemClock.elapsedRealtime() + timeInMillis
