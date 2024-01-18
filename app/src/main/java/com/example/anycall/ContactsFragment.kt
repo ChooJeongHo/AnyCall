@@ -343,6 +343,7 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
                         )
                     }
                     dataList.add(newItem)
+                    originalDataList = ArrayList(dataList)
                     adapter.notifyDataSetChanged()
                 }
                 dialogView.addDialogOkbutton.apply {
