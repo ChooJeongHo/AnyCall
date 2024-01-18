@@ -56,6 +56,7 @@
         android:id="@+id/addUserPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="phone"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:hint="Phone"/>
@@ -65,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:hint="feel"/>
+        android:hint="메모"/>
     <EditText
         android:id="@+id/addUserEmail"
         android:layout_width="match_parent"
