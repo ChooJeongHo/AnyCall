@@ -29,6 +29,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:src="@drawable/profile_grdient_white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/user_image"/>
+
 
             <ImageView
                 android:id="@+id/iv_detail_like"
@@ -104,7 +112,6 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/bg_mypage_info_line"
-                android:fontFamily="@font/bmjua"
                 android:text="Phone Number"
                 android:textColor="@color/black"
                 android:textSize="20sp"
@@ -207,9 +214,9 @@
             android:layout_height="50dp"
             android:layout_margin="10dp"
             android:backgroundTint="@color/starColor"
+            android:fontFamily="@font/bmjua"
             android:text="메시지 보내기"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:textSize="19sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_call"
             app:layout_constraintHorizontal_bias="0.5"
@@ -223,8 +230,8 @@
             android:layout_margin="10dp"
             android:backgroundTint="@color/starColor"
             android:text="전화 걸기"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:textSize="19sp"
+            android:fontFamily="@font/bmjua"
             app:layout_constraintBottom_toBottomOf="@id/btn_message"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

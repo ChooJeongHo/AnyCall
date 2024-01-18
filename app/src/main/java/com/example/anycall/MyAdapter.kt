@@ -11,9 +11,10 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.anycall.databinding.ItemBinding
 import androidx.viewbinding.ViewBinding
+import com.example.anycall.databinding.ItemBinding
 import com.example.anycall.databinding.ItemGridBinding
+import java.util.Collections
 
 class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapter.Holder>(),
     ItemTouchHelperListener {
@@ -33,7 +34,7 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
     }
 
     interface ItemClick {
-        fun onClick(view: View, position: Int)
+        fun onClick(item: MyItem, position: Int)
     }
 
     var itemClick: ItemClick? = null
@@ -92,7 +93,7 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
         )
         holder.itemView.setBackgroundColor(backgroundColor)
         holder.itemView.setOnClickListener {
-            itemClick?.onClick(it, position)
+            itemClick?.onClick(mItems[position], position)
         }
         if (mItems[position].favorite) {
             holder.like.setImageResource(R.drawable.ic_star_fill)

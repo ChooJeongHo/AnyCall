@@ -1,5 +1,8 @@
 package com.example.anycall
 
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
@@ -30,6 +33,33 @@ class ItemTouchHelperCallback(val listener: ItemTouchHelperListener)
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
+    // 아이템을 스와이프할 때 호출되는 메서드
+    override fun onChildDraw(
+        c: Canvas,
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+        dX: Float,
+        dY: Float,
+        actionState: Int,
+        isCurrentlyActive: Boolean
+    ) {
+        // 스와이프할 때 배경색을 변경하기 위한 Paint 객체 생성
+        val paint = Paint()
+        paint.color = Color.parseColor("#FFAE10")
+
+        // 스와이프한 영역을 그리기
+        c.drawRect(
+            viewHolder.itemView.left.toFloat(),
+            viewHolder.itemView.top.toFloat(),
+            viewHolder.itemView.right + dX,
+            viewHolder.itemView.bottom.toFloat(),
+            paint
+        )
+
+        // 원래의 onChildDraw 메서드 호출 (이 부분을 지우지 않도록 주의)
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+    }
+
 }
