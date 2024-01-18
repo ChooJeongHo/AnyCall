@@ -43,6 +43,11 @@ class MyPageFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        favoriteAdapter.submitList(MyItem.dataList.filter { it.favorite }.toMutableList())
+    }
+
     private fun initInfo() {
         with(binding) {
             mypageProfileName.text = User.getUser().name
@@ -57,9 +62,17 @@ class MyPageFragment : Fragment() {
             submitList(MyItem.dataList.filter { it.favorite }.toMutableList())
 
             listener = object : FavoriteAdapter.OnItemClickListener {
-                override fun onItemClick(data: MyItem, pos: Int) {
+                override fun onPhoneClick(data: MyItem, pos: Int) {
                     val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:${data.phoneNum}"))
                     startActivity(intent)
+                }
+
+                override fun onItemClick(data: MyItem) {
+                    requireActivity().supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.frame, ContactDetailFragment.newInstance(data) )
+                        setReorderingAllowed(true)
+                        addToBackStack("")
+                    }.commit()
                 }
             }
         }
@@ -120,7 +133,6 @@ class MyPageFragment : Fragment() {
         dialogView.mypageDialogCancel.setOnClickListener {
             alertDialog.dismiss()
         }
-
         alertDialog.show()
     }
 

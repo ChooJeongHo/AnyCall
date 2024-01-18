@@ -1,6 +1,5 @@
 package com.example.anycall
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -12,7 +11,8 @@ import com.example.anycall.databinding.ItemFavoritesBinding
 class FavoriteAdapter(): ListAdapter<MyItem, FavoriteAdapter.FavoriteViewHolder>(diffUtil) {
 
     interface OnItemClickListener {
-        fun onItemClick(data: MyItem, pos: Int)
+        fun onPhoneClick(data: MyItem, pos: Int)
+        fun onItemClick(data: MyItem)
     }
     var listener: OnItemClickListener? = null
 
@@ -37,9 +37,11 @@ class FavoriteAdapter(): ListAdapter<MyItem, FavoriteAdapter.FavoriteViewHolder>
                     .into(itemFavoriteImage)
                 itemFavoriteName.text = item.name
                 itemFavoriteCall.setOnClickListener {
-                    listener?.onItemClick(item, adapterPosition)
+                    listener?.onPhoneClick(item, adapterPosition)
                 }
-
+                root.setOnClickListener {
+                    listener?.onItemClick(item)
+                }
             }
         }
     }
