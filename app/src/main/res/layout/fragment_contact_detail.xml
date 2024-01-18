@@ -31,7 +31,7 @@
 
 
             <ImageView
-                android:id="@+id/iv_detail_like"
+                android:id="@+id/user_detail_like"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_margin="12dp"

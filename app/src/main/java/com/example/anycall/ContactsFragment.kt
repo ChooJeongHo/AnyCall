@@ -1,37 +1,44 @@
 package com.example.anycall
 
+import android.Manifest
 import android.app.Activity
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.ContentUris
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.SystemClock
+import android.provider.ContactsContract
+import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.anycall.MyItem.Companion.dataList
 import com.example.anycall.databinding.FragmentContactsBinding
-import android.Manifest
-import android.content.ContentUris
-import android.content.Context
-import android.content.ContextWrapper
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.provider.ContactsContract
-import android.util.Log
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -56,12 +63,12 @@ class ContactsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+//        (activity as AppCompatActivity).supportActionBar?.title = "Contacts"
         setHasOptionsMenu(true)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
     }
 
     /**
@@ -250,7 +257,7 @@ class ContactsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         initPermission()
         return binding.root
     }
@@ -276,18 +283,38 @@ class ContactsFragment : Fragment() {
                 val phoneEdit = v1.findViewById<EditText>(R.id.addUserPhone)
                 val statusEdit = v1.findViewById<EditText>(R.id.addUserStatus)
                 val emailEdit = v1.findViewById<EditText>(R.id.addUserEmail)
+                val btnOff = v1.findViewById<Button>(R.id.btn_notify_off)
+                val btnFive = v1.findViewById<Button>(R.id.btn_notify_five)
+                val btnTen = v1.findViewById<Button>(R.id.btn_notify_ten)
+                val btnFifteen = v1.findViewById<Button>(R.id.btn_notify_fifteen)
+
                 userImg.setOnClickListener {
                     val intent = Intent()
                     intent.type = "image/*"
                     intent.action = Intent.ACTION_GET_CONTENT
                     startActivityForResult(intent, DEFAULT_GALLERY_REQUEST_CODE)
                 }
+                btnOff.setOnClickListener {
+                    checkNotificationPermission()
+                    sendNotification(0)
+                }
+                btnFive.setOnClickListener {
+                    checkNotificationPermission()
+                    sendNotification(5000)
+                }
+                btnTen.setOnClickListener {
+                    checkNotificationPermission()
+                    sendNotification(10000)
+                }
+                btnFifteen.setOnClickListener {
+                    checkNotificationPermission()
+                    sendNotification(15000)
+                }
                 val listener = DialogInterface.OnClickListener { p0, p1 ->
                     val name = nameEdit.text.toString()
                     val phone = phoneEdit.text.toString()
                     val state = statusEdit.text.toString()
                     val email = emailEdit.text.toString()
-
                     val newItem: MyItem
                     if(isImageSelected){
                         newItem = MyItem(
@@ -333,6 +360,26 @@ class ContactsFragment : Fragment() {
                 }.commit()
             }
 
+        }
+    }
+
+    private fun sendNotification(timeInMillis: Long) {
+        val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val notificationIntent = Intent(requireContext(), MyAlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+
+        val futureInMillis = SystemClock.elapsedRealtime() + timeInMillis
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
+    }
+
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (!NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()) {
+                val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                    putExtra(Settings.EXTRA_APP_PACKAGE, requireActivity().packageName)
+                }
+                requireActivity().startActivity(intent)
+            }
         }
     }
 
