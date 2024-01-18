@@ -54,7 +54,7 @@ class MyAlarmReceiver : BroadcastReceiver() {
         val myItem = intent.getParcelableExtra<MyItem>("MY_ITEM")
         // 알림의 기본 정보
         builder.run {
-            setSmallIcon(R.drawable.ic_logo)
+            setSmallIcon(R.drawable.call)
             setWhen(System.currentTimeMillis())
             setContentTitle("지금 ${myItem?.name}님에게 전화를 걸 시간이에요")
             myItem?.icon?.let{
