@@ -132,7 +132,7 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
             }
             cursor.close()
         }
-
+        dataList.sortBy { it.name }
     }
 
     private fun getEmail(contactId: Long): String? {
@@ -350,6 +350,8 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
                         )
                     }
                     dataList.add(newItem)
+                    // 이름으로 다시 정렬
+                    dataList.sortBy { it.name }
                     originalDataList = ArrayList(dataList)
                     adapter.notifyDataSetChanged()
                     alertDialog.dismiss()
