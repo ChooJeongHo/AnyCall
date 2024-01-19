@@ -151,12 +151,12 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
             cursor.close()
         }
 
-        if (!::adapter.isInitialized) {
-            adapter = MyAdapter(dataList)
-            binding.recyclerView.adapter = adapter
-        }
+//        if (!::adapter.isInitialized) {
+//            adapter = MyAdapter(dataList)
+//            binding.recyclerView.adapter = adapter
+//        }
 
-        adapter.notifyDataSetChanged()
+//        adapter.notifyDataSetChanged()
     }
 
     private fun getEmail(contactId: Long): String? {
@@ -240,7 +240,7 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
 
             R.id.action_grid_view -> {
                 // 메뉴 아이템이 클릭되었을 때의 동작을 여기에 작성합니다.
-                binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
+                binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
                 adapter.setGridView(true)
                 binding.recyclerView.adapter = adapter
                 true
@@ -291,8 +291,9 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-        adapter = MyAdapter(MyItem.dataList)
+//        adapter = MyAdapter(MyItem.dataList)
         with(binding) {
+            adapter = MyAdapter(dataList)
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
