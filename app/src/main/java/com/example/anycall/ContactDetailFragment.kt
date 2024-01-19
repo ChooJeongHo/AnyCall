@@ -15,7 +15,6 @@ import android.view.ViewGroup
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import com.example.anycall.databinding.FragmentContactDetailBinding
-import java.text.DecimalFormat
 
 class ContactDetailFragment : Fragment() {
     interface OnFavoriteChangedListener{
