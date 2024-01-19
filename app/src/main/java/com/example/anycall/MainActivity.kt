@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity() {
                 arrayOf(Manifest.permission.CALL_PHONE),
                 MyAdapter.MY_PERMISSIONS_REQUEST_CALL_PHONE
             )
-            initReadContactsPermission()
         }
     }
 
@@ -60,7 +59,6 @@ class MainActivity : AppCompatActivity() {
                 // CALL_PHONE 권한에 대한 응답 확인
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // CALL_PHONE 권한이 승인된 경우, READ_CONTACTS 권한 확인
-                    initReadContactsPermission()
                 } else {
                     // CALL_PHONE 권한이 거부된 경우, Toast 메시지 표시 및 프래그먼트 실행
                     Toast.makeText(
@@ -68,15 +66,14 @@ class MainActivity : AppCompatActivity() {
                         R.string.main_call_request,
                         Toast.LENGTH_SHORT
                     ).show()
-                    initViewPager()
                 }
+                initReadContactsPermission()
             }
 
             101 -> {
                 // READ_CONTACTS 권한에 대한 응답 확인
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // READ_CONTACTS 권한이 승인된 경우, initViewPager 실행
-                    initViewPager()
                 } else {
                     // READ_CONTACTS 권한이 거부된 경우, Toast 메시지 표시 및 initViewPager 실행
                     Toast.makeText(
@@ -84,7 +81,6 @@ class MainActivity : AppCompatActivity() {
                         R.string.main_read_request,
                         Toast.LENGTH_SHORT
                     ).show()
-                    initViewPager()
                 }
             }
 
@@ -99,7 +95,6 @@ class MainActivity : AppCompatActivity() {
             == PackageManager.PERMISSION_GRANTED
         ) {
             // READ_CONTACTS 권한이 이미 허용된 경우
-            initViewPager()
         } else {
             // READ_CONTACTS 권한이 없는 경우, 권한 요청
             ActivityCompat.requestPermissions(
