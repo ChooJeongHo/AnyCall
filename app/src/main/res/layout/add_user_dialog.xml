@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/pyeongchangpeacelight"
-            android:text="상태메세지 변경"
+            android:text="@string/add_user_dialog_title"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:hint="Name"/>
+        android:hint="@string/add_user_dialog_name"/>
     <EditText
         android:id="@+id/addUserPhone"
         android:layout_width="match_parent"
@@ -59,27 +59,27 @@
         android:inputType="phone"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:hint="Phone"/>
+        android:hint="@string/add_user_dialog_phone"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:textColor="#D3D3D3"
-        android:text="-를 제외한 11자리"/>
+        android:text="@string/add_user_dialog_phone_message"/>
     <EditText
         android:id="@+id/addUserStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:hint="메모"/>
+        android:hint="@string/add_user_dialog_memo"/>
     <EditText
         android:id="@+id/addUserEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:hint="Email"/>
+        android:hint="@string/add_user_dialog_email"/>
 
 
     <Button
@@ -89,6 +89,6 @@
         android:layout_marginTop="12dp"
         android:backgroundTint="@color/starColor"
         android:layout_gravity="center"
-        android:text="확인"/>
+        android:text="@string/add_user_dialog_ok"/>
 
 </LinearLayout>
