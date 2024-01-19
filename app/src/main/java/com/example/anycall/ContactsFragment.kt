@@ -2,8 +2,6 @@ package com.example.anycall
 
 import android.Manifest
 import android.app.Activity
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.ContentUris
 import android.content.Context
 import android.content.ContextWrapper
@@ -13,29 +11,21 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.os.SystemClock
 import android.provider.ContactsContract
-import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
-import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -52,8 +42,6 @@ import java.io.InputStream
 import java.io.OutputStream
 
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedListener {
     private var isImageSelected = false
@@ -72,10 +60,6 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
         super.onCreate(savedInstanceState)
         binding = FragmentContactsBinding.inflate(layoutInflater)
         setHasOptionsMenu(true)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     /**

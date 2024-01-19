@@ -4,7 +4,6 @@ package com.example.anycall
 import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.example.anycall.databinding.ItemBinding
 import com.example.anycall.databinding.ItemGridBinding
-import java.util.Collections
 
 class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapter.Holder>(),
     ItemTouchHelperListener {
@@ -64,11 +62,10 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
         val phoneNumber = mItems[position].phoneNum
         if (!mItems[position].isSwiped) {
             mItems[position].isSwiped = true // 스와이프 상태 변경
-            notifyItemChanged(position) // 아이템 변경을 알림
+            notifyDataSetChanged() // 아이템 변경을 알림
         }
         val callIntent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneNumber"))
         context?.startActivity(callIntent)
-
     }
 
 
