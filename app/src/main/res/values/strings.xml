@@ -19,7 +19,7 @@
     <string name="fragment_contact_detail_event_10">10분후 알림</string>
     <string name="fragment_contact_detail_button_send_message">메시지 보내기</string>
     <string name="fragment_contact_detail_button_call">전화 걸기</string>
-    <string name="fragment_my_page_empty_text">최애의 아이를 선택해주세요!</string>
+    <string name="fragment_my_page_empty_text">친한 친구를 즐겨찾기\n 해주세요!</string>
     <string name="my_page_dialog_title">상태메세지 변경</string>
     <string name="my_page_dialog_hint">상태 메세지를 입력해주세요!</string>
 
