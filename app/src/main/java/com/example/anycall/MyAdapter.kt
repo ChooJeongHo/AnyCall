@@ -62,13 +62,9 @@ class MyAdapter(val mItems: MutableList<MyItem>) : RecyclerView.Adapter<MyAdapte
     override fun onItemSwipe(position: Int) {
         val context = recyclerView?.context
         val phoneNumber = mItems[position].phoneNum
-        if (!mItems[position].isSwiped) {
-            mItems[position].isSwiped = true // 스와이프 상태 변경
-            notifyItemChanged(position) // 아이템 변경을 알림
-        }
+        notifyItemChanged(position)
         val callIntent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneNumber"))
         context?.startActivity(callIntent)
-
     }
 
 
