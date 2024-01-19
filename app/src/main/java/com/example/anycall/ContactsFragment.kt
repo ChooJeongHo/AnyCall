@@ -45,8 +45,6 @@ import java.io.OutputStream
 
 class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedListener {
     private var isImageSelected = false
-    private var param1: String? = null
-    private var param2: String? = null
     private lateinit var binding: FragmentContactsBinding
     private val DEFAULT_GALLERY_REQUEST_CODE = 123
     private lateinit var selectedImageUri: Uri
@@ -135,12 +133,6 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
             cursor.close()
         }
 
-//        if (!::adapter.isInitialized) {
-//            adapter = MyAdapter(dataList)
-//            binding.recyclerView.adapter = adapter
-//        }
-
-//        adapter.notifyDataSetChanged()
     }
 
     private fun getEmail(contactId: Long): String? {
@@ -275,7 +267,6 @@ class ContactsFragment : Fragment(), ContactDetailFragment.OnFavoriteChangedList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-//        adapter = MyAdapter(MyItem.dataList)
         with(binding) {
             adapter = MyAdapter(dataList)
             recyclerView.adapter = adapter
