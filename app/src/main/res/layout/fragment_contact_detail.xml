@@ -176,7 +176,7 @@
                 android:gravity="center"
                 android:text="5분후 알림 "
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="22sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_event" />
 
@@ -190,7 +190,7 @@
                 android:gravity="center"
                 android:text="10분후 알림 "
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="22sp"
                 app:layout_constraintBottom_toBottomOf="@+id/event_five"
                 app:layout_constraintStart_toEndOf="@+id/event_five"
                 app:layout_constraintTop_toTopOf="@+id/event_five" />
