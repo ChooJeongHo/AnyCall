@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".MyPageFragment">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/mypage_viewpager"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/profile_grdient_yellow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_favorite_empty_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pyeongchangpeacebold"
+        android:text="@string/fragment_my_page_empty_text"
+        android:textAlignment="center"
+        android:textColor="@color/starColor"
+        android:textSize="33sp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintBottom_toBottomOf="@id/mypage_viewpager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/mypage_viewpager" />
+
+<!--    <me.relex.circleindicator.CircleIndicator3-->
+<!--        android:id="@+id/mypage_viewpager_indicator"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="30dp"-->
+<!--        app:ci_drawable="@drawable/indicator_orange"-->
+<!--        app:ci_drawable_unselected="@drawable/indicator_white"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/mypage_viewpager"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
+
+    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+        android:id="@+id/mypage_viewpager_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        app:dotsColor="@color/white"
+        app:dotsCornerRadius="8dp"
+        app:dotsSize="10dp"
+        app:dotsSpacing="6dp"
+        app:dotsWidthFactor="2.5"
+        app:layout_constraintBottom_toBottomOf="@id/mypage_viewpager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:progressMode="true"
+        app:selectedDotColor="@color/starColor" />
+
+    <ImageView
+        android:id="@+id/ic_arrow_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="6dp"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ic_arrow_forward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/ic_arrow_forward"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/mypage_profile_image"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/ic_dummy"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mypage_viewpager" />
+
+    <TextView
+        android:id="@+id/mypage_profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        tools:text="@string/fragment_contact_detail_name"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/mypage_profile_image"
+        app:layout_constraintStart_toEndOf="@id/mypage_profile_image"
+        app:layout_constraintTop_toTopOf="@id/mypage_profile_image" />
+
+    <TextView
+        android:id="@+id/mypage_phone_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_mypage_info_round"
+        android:text="@string/fragment_contact_detail_phone"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/mypage_profile_image"
+        app:layout_constraintTop_toBottomOf="@id/mypage_profile_image" />
+
+    <TextView
+        android:id="@+id/mypage_phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/bg_mypage_info_line"
+        android:fontFamily="@font/bmjua"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/mypage_profile_image"
+        app:layout_constraintTop_toBottomOf="@id/mypage_phone_text" />
+
+    <TextView
+        android:id="@+id/mypage_message_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/bg_mypage_info_round"
+        android:text="@string/add_user_dialog_memo"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/mypage_profile_image"
+        app:layout_constraintTop_toBottomOf="@id/mypage_phone" />
+
+    <ImageView
+        android:id="@+id/mypage_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:src="@drawable/ic_edit"
+        app:layout_constraintBottom_toBottomOf="@id/mypage_message_text"
+        app:layout_constraintStart_toEndOf="@id/mypage_message_text"
+        app:layout_constraintTop_toTopOf="@id/mypage_message_text" />
+
+
+    <TextView
+        android:id="@+id/mypage_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/bg_mypage_info_line"
+        android:ellipsize="end"
+        android:hint="간단한 메모를 입력해주세요"
+        android:fontFamily="@font/bmjua"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/mypage_profile_image"
+        app:layout_constraintTop_toBottomOf="@id/mypage_message_text" />
+
+    <TextView
+        android:id="@+id/mypage_email_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/bg_mypage_info_round"
+        android:text="@string/fragment_contact_detail_email"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/mypage_profile_image"
+        app:layout_constraintTop_toBottomOf="@id/mypage_message" />
+
+    <TextView
+        android:id="@+id/mypage_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/bg_mypage_info_line"
+        android:fontFamily="@font/bmjua"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/mypage_profile_image"
+        app:layout_constraintTop_toBottomOf="@id/mypage_email_text" />
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/mypage_event_text"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="32dp"-->
+    <!--        android:background="@drawable/bg_mypage_info_round"-->
+    <!--        android:text="이벤트"-->
+    <!--        android:textColor="@color/white"-->
+    <!--        app:layout_constraintStart_toStartOf="@id/mypage_profile_image"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/mypage_email" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/mypage_event"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="8dp"-->
+    <!--        android:layout_marginEnd="24dp"-->
+    <!--        android:background="@drawable/bg_mypage_info_line"-->
+    <!--        android:text="5분 후 알림"-->
+    <!--        android:textColor="@color/black"-->
+    <!--        android:fontFamily="@font/bmjua"-->
+    <!--        android:textSize="18sp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="@id/mypage_profile_image"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/mypage_event_text" />-->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

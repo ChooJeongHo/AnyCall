@@ -1,3 +1,41 @@
 <resources>
     <string name="app_name">AnyCall</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_user_dialog_name">Name</string>
+    <string name="add_user_dialog_phone">Phone</string>
+    <string name="add_user_dialog_phone_message">-를 제외한 11자리</string>
+    <string name="add_user_dialog_memo">메모</string>
+    <string name="add_user_dialog_email">Email</string>
+    <string name="add_user_dialog_ok">확인</string>
+    <string name="add_user_dialog_title">연락처 추가</string>
+    
+    <string name="fragment_contact_detail_name">이름</string>
+    <string name="fragment_contact_detail_comment">Comment</string>
+    <string name="fragment_contact_detail_phone">번호</string>
+    <string name="fragment_contact_detail_email">이메일</string>
+    <string name="fragment_contact_detail_event">이벤트</string>
+    <string name="fragment_contact_detail_event_5">5분후 알림</string>
+    <string name="fragment_contact_detail_event_10">10분후 알림</string>
+    <string name="fragment_contact_detail_button_send_message">메시지 보내기</string>
+    <string name="fragment_contact_detail_button_call">전화 걸기</string>
+    <string name="fragment_my_page_empty_text">친한 친구를 즐겨찾기\n 해주세요!</string>
+    <string name="my_page_dialog_title">상태메세지 변경</string>
+    <string name="my_page_dialog_hint">상태 메세지를 입력해주세요!</string>
+
+    <string name="add_munu1">ListView</string>
+    <string name="add_munu2">GridView</string>
+
+    <string name="contacts_valid_empty">이름과 번호는 꼭 입력해주세요.</string>
+    <string name="contacts_valid_length">-를 제외한 11자리를 입력해주세요.</string>
+
+    <string name="main_list_first">CONTACT</string>
+    <string name="main_list_second">MY PAGE</string>
+    <string name="main_call_request">일부 기능을 사용할 수 없을 수 있습니다.</string>
+    <string name="main_read_request">휴대전화가 백업되지 않습니다.</string>
+
+    <string name="recycler_adapter_item_delete_title">삭제 확인</string>
+    <string name="recycler_adapter_item_no">아니오</string>
+    <string name="recycler_adapter_item_yes">예</string>
+
 </resources>
