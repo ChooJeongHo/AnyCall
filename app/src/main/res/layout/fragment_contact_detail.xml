@@ -172,11 +172,9 @@
                 android:background="@drawable/bg_mypage_info_line"
                 android:fontFamily="@font/bmjua"
                 android:gravity="center"
-                android:text="5분후 알림 "
                 android:textColor="@color/black"
                 android:textSize="22sp"
                 android:text="@string/fragment_contact_detail_event_5"
-                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_event" />
 
