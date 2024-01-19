@@ -74,6 +74,7 @@ class MainActivity : AppCompatActivity() {
                 // READ_CONTACTS 권한에 대한 응답 확인
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // READ_CONTACTS 권한이 승인된 경우, initViewPager 실행
+                    initViewPager()
                 } else {
                     // READ_CONTACTS 권한이 거부된 경우, Toast 메시지 표시 및 initViewPager 실행
                     Toast.makeText(
